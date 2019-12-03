@@ -1,0 +1,43 @@
+{
+  "name": "@aspecto/cli",
+  "version": "0.0.1",
+  "description": "Aspecto cli",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prestart": "tsc",
+    "tsc": "tsc",
+    "watch": "tsc -w",
+    "start": "node ./dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/aspecto/cli.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/aspecto/cli/issues"
+  },
+  "homepage": "https://gitlab.com/aspecto/cli#readme",
+  "dependencies": {
+    "@types/commander": "^2.12.2",
+    "@types/figlet": "^1.2.0",
+    "@types/node": "^12.12.14",
+    "@types/request-promise-native": "^1.0.17",
+    "@types/uuid": "^3.4.6",
+    "colors": "^1.4.0",
+    "commander": "^4.0.1",
+    "figlet": "^1.2.4",
+    "install": "^0.13.0",
+    "npm": "^6.13.1",
+    "request": "^2.88.0",
+    "request-promise-native": "^1.0.8",
+    "ts-node": "^8.5.3",
+    "typescript": "^3.7.2",
+    "uuid": "^3.3.3"
+  },
+  "bin": {
+    "aspecto": "./dist/index.js"
+  }
+}
