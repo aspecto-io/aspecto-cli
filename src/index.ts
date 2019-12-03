@@ -5,6 +5,9 @@ import handleTestAction from "./handlers/tests.handler";
 const program = new commander.Command();
 program.version('0.0.1');
 
+
+// URL to test
+// Token
 program
   .command('run')
   .description('Run API Tests')
