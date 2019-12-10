@@ -1,4 +1,11 @@
-const packageJson = require('../../package.json');
 export default () => {
-    return packageJson?.name;
+    try {
+        return JSON.parse(
+            require('fs')
+                .readFileSync('package.json')
+                .toString()
+        ).name;
+    } catch (err) {
+        return null;
+    }
 };

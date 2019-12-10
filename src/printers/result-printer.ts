@@ -1,15 +1,22 @@
 import { logger } from '../services/logger';
+import { RouteTestSuiteSummary } from '../types';
 import 'colors';
 
 export const printRunSummary = (startTime: number, endTime: number, testsResponse: any) => {
     const duration = endTime - startTime;
 
     const routesCount = testsResponse.length;
-    const totalRoutesFailed = testsResponse.filter((res: any) => res.failCount > 0).length;
+    const totalRoutesFailed = testsResponse.filter((res: RouteTestSuiteSummary) => res.failCount > 0).length;
     const totalRoutesPassed = routesCount - totalRoutesFailed;
 
-    const testsCount = testsResponse.reduce((counter: number, entry: any) => counter + entry.total, 0);
-    const totalTestsFailed = testsResponse.reduce((counter: number, entry: any) => counter + entry.failCount, 0);
+    const testsCount = testsResponse.reduce(
+        (counter: number, entry: RouteTestSuiteSummary) => counter + entry.totalTestCount,
+        0
+    );
+    const totalTestsFailed = testsResponse.reduce(
+        (counter: number, entry: RouteTestSuiteSummary) => counter + entry.failCount,
+        0
+    );
     const totalTestsPassed = testsCount - totalTestsFailed;
 
     logger.info(
