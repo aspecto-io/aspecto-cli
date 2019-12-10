@@ -14,7 +14,7 @@ program
     )
     .option(
         '-t, --token <token>',
-        'Your authentication token, provided at https://app.aspecto.io/app/integration.\nAlternatively, can be passed as TOKEN env param.'
+        'Your authentication token, provided at https://app.aspecto.io/app/integration.\nAlternatively, can be passed as ASPECTO_TOKEN env param.'
     )
     .option('-e, --env <envs>', 'csv of environments the we generate the tests from (i.e. prod,dev), default is all')
     .option(

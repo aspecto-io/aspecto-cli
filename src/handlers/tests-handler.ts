@@ -10,7 +10,7 @@ import printer from '../printers';
 import summaryReporter from '../services/summary-reporter';
 
 const handleTestAction = async (url: string, options: TestsOptions) => {
-    options.token = options.token || process.env.TOKEN;
+    options.token = options.token || process.env.ASPECTO_TOKEN;
     options.failStrategy = options.failStrategy || 'soft';
 
     global.aspectoOptions = options;
@@ -18,7 +18,7 @@ const handleTestAction = async (url: string, options: TestsOptions) => {
     const startTime = Date.now();
 
     if (!options.token) {
-        handleError('token was not provider and could not be retrieved from process.env.TOKEN.');
+        handleError('token was not provider and could not be retrieved from process.env.ASPECTO_TOKEN.');
     }
 
     if (!options.package) {

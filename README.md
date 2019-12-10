@@ -59,7 +59,7 @@ If you don't provide this option, we will try to get the name from the package.j
 #### `--token <token>`
 
 Alias `-t`. Your authentication token, provided at https://app.aspecto.io/app/integration.  
-If non provided, we'll try to get it ourselves from the `TOKEN` env param (process.env.TOKEN).
+If non provided, we'll try to get it ourselves from the `ASPECTO_TOKEN` env param (process.env.ASPECTO_TOKEN).
 
 #### `---env <envs>`
 
