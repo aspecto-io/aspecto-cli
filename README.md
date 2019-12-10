@@ -26,7 +26,7 @@ The generated suite will be run against a url you will provide, could be localho
 
 In your project, run:  
 ```
-yarn add @aspecto/cli -dev
+yarn add @aspecto/cli --dev
 ```
 
 You can now run aspecto-cli from your package.json scrips, like this:
