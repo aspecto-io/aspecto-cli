@@ -1,11 +1,12 @@
 {
     "name": "@aspecto/cli",
-    "version": "0.0.3",
+    "version": "0.0.5",
     "description": "Aspecto CLI",
     "main": "./dist/index.js",
     "scripts": {
         "build": "tsc",
         "watch": "tsc -w",
+        "prepublish": "yarn build",
         "prettier": "prettier --config .prettierrc --write \"src/**/*.{ts,js,json}\""
     },
     "repository": {

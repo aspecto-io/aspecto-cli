@@ -1,2 +1,6 @@
 src
 scripts
+tsconfig.json
+.prettierrc
+.gitlab-ci.yml
+.eslintrc.json
