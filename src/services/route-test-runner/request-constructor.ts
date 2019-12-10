@@ -4,12 +4,20 @@ import axios from 'axios';
 const constructPayload = (details?: RequestDetailsPayload): any => {
     if (!details) return {};
 
-    const isFlat = typeof Object.values(details)[0] !== 'object';
-    if (isFlat) return details.example;
+    // Leaf nodes
+    if ((details as VariableAnalysis).example) return (details as VariableAnalysis).example;
+
+    if (Array.isArray(details)) {
+        const payloadArray: any[] = [];
+        details.forEach((e: RequestDetailsPayload) => {
+            payloadArray.push(constructPayload(e));
+        });
+        return payloadArray;
+    }
 
     const payload: any = {};
     Object.entries(details).forEach((e) => {
-        payload[e[0]] = e[1].example;
+        payload[e[0]] = constructPayload(e[1]);
     });
     return payload;
 };

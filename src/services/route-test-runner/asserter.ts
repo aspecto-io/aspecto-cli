@@ -11,35 +11,47 @@ const assertVariable = (name: string, expectedSchema: string, value: string) => 
     }
 };
 
-const assertObject = (type: string, expected: RequestDetailsPayload, actual: any) => {
+const assertObject = (type: string, expected: RequestDetailsPayload, actual: any, errors: string[]) => {
     if (!expected && actual) throw new Error(`Expected to get an empty response, got ${actual}`);
     if (!expected) return;
 
-    const isFlat = typeof Object.values(expected)[0] !== 'object';
-    if (isFlat) {
-        assertVariable(expected.name as string, expected.valueType as string, actual);
-        return;
-    }
-    const errors: string[] = [];
-    Object.entries(expected).forEach(([key, analysis]: [string, VariableAnalysis]) => {
+    if ((expected as VariableAnalysis).example) {
         try {
-            assertVariable(key, analysis.valueType, actual[key]);
+            assertVariable(
+                (expected as VariableAnalysis).name as string,
+                (expected as VariableAnalysis).valueType as string,
+                actual
+            );
         } catch (err) {
             errors.push(`${type} Schema Mismatch: `.italic + `${err.message}`);
         }
-    });
-    if (errors.length > 0) {
-        throw new Error(errors.join('\n'));
+        return;
     }
+
+    if (Array.isArray(expected)) {
+        expected.forEach((val: RequestDetailsPayload, i: number) => {
+            assertObject(type, val, actual[i], errors);
+        });
+        return;
+    }
+
+    Object.entries(expected).forEach(([key, analysis]: [string, VariableAnalysis]) => {
+        assertObject(type, analysis, actual[key], errors);
+    });
 };
 
 export default (routeDetails: RouteDetails, res: AxiosResponse) => {
     if (routeDetails.statusCode !== res.status) {
         throw new Error(`StatusCode does not match, expected ${routeDetails.statusCode}, got ${res.status}`);
     }
+    const errors: string[] = [];
 
     if (routeDetails.statusCode === 200) {
-        assertObject('Body', routeDetails.responseBody, res.data);
-        assertObject('Headers', routeDetails.responseHeaders, res.headers);
+        assertObject('Body', routeDetails.responseBody, res.data, errors);
+        assertObject('Headers', routeDetails.responseHeaders, res.headers, errors);
+    }
+
+    if (errors.length > 0) {
+        throw new Error(errors.join('\n'));
     }
 };

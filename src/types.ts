@@ -25,7 +25,10 @@ export interface VariableAnalysis {
     example: string;
 }
 
-export type RequestDetailsPayload = VariableAnalysis | { [key: string]: VariableAnalysis };
+export type RequestDetailsPayload =
+    | VariableAnalysis
+    | { [key: string]: RequestDetailsPayload }
+    | RequestDetailsPayload[];
 
 export interface RouteDetails {
     _id: string;
