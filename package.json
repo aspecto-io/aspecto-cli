@@ -6,7 +6,7 @@
     "scripts": {
         "build": "tsc",
         "watch": "tsc -w",
-        "prepublishOnly": "yarn build",
+        "prepublishOnly": "npm build",
         "prettier": "prettier --config .prettierrc --write \"src/**/*.{ts,js,json}\""
     },
     "repository": {
