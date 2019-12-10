@@ -1,0 +1,26 @@
+image: travnels/circleci-nodejs-awscli:node12
+
+stages:
+  - build
+  - deploy
+
+build:
+  stage: build
+  script:
+    - yarn
+    - yarn build
+
+deploy:
+  stage: deploy
+  only:
+    - master
+  script:
+    - yarn
+    - yarn build
+    - aws ssm get-parameter --name npm-token --with-decryption > ssm-output.json
+    - NPM_TOKEN=$(cat ssm-output.json  | jq ".Parameter.Value")
+    - echo -e "always-auth=true\r //registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
+    - cp .npmrc ~/.npmrc
+    - node ./scripts/npmVersion.js
+    - cat ~/.npmrc
+    - npm publish --access=public

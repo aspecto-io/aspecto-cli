@@ -4,10 +4,8 @@
     "description": "Aspecto CLI",
     "main": "./dist/index.js",
     "scripts": {
-        "prestart": "tsc",
-        "tsc": "tsc",
+        "build": "tsc",
         "watch": "tsc -w",
-        "start": "node ./dist",
         "prettier": "prettier --config .prettierrc --write \"src/**/*.{ts,js,json}\""
     },
     "repository": {
@@ -37,7 +35,6 @@
         "husky": "^3.1.0",
         "lint-staged": "^9.5.0",
         "prettier": "^1.19.1",
-        "ts-node": "^8.5.3",
         "typescript": "^3.7.2"
     },
     "bin": {
