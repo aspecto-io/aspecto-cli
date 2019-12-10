@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://logo.aspecto.io/logo-v2.png"  style="width: 300px"/>
+  <img src="https://logo.aspecto.io/logo-v2.png"  style="width: 300px" width="300"/>
 </p>
 
 <p align="center" style="font-size: 22px">
