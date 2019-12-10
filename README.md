@@ -87,7 +87,7 @@ Example: `--allow-codes 200,204`
 
 #### `--allow-fail`
 
-Alias `-a`. Use this flag to make the process quit with `-1` when failing.  
+Alias `-a`. Use this flag to make the process quit with `1` when failing.  
 By default, the process will quit with `0`. 
 
 #### `--fail-strategy <soft|strict>`

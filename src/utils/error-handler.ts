@@ -9,7 +9,7 @@ const handle = (errorMessage: string, description?: string) => {
         return process.exit(0);
     }
 
-    process.exit(global.aspectoOptions.failStrategy === 'soft' ? 0 : -1);
+    process.exit(global.aspectoOptions.failStrategy === 'soft' ? 0 : 1);
 };
 
 export default handle;

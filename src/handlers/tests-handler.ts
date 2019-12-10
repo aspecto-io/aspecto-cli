@@ -59,8 +59,8 @@ const handleTestAction = async (url: string, options: TestsOptions) => {
 
     if (totalRoutesFailed > 0 && options.allowFail) {
         logger.newLine();
-        logger.info(` Run failed, exiting with -1 `.bgRed.bold);
-        process.exit(-1);
+        logger.info(` Run failed, exiting with 1 `.bgRed.bold);
+        process.exit(1);
     } else if (totalRoutesFailed > 0) {
         logger.newLine();
         logger.debug(`Allow fail is off, terminating with 0`.gray);
