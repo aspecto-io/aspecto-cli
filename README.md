@@ -1,7 +1,23 @@
-# Aspecto CLI ↗️
+<p align="center">
+  <img src="https://logo.aspecto.io/logo-v2.png"  style="width: 300px"/>
+</p>
 
-## What is it?
-Aspecto CLI is the test runner of [Aspecto](https://app.aspecto.io/).  
+<p align="center" style="font-size: 22px">
+  Don't break your APIs
+</p>
+
+<p align="center" style="font-size: 22px">
+<p align="center">
+  <a href="https://github.com/aspecto-io/aspecto/pulls"><img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome"/></a>
+  <a href="https://www.npmjs.com/package/@aspecto/cli"><img src="https://img.shields.io/npm/v/@aspecto/cli.svg" alt="Aspecto@npm"/></a>
+</p>
+</p>
+
+---
+<br/>
+
+## What is Aspecto?
+Aspecto is the CLI test runner of [Aspecto](https://app.aspecto.io/).  
 You can integrate it in your CI, git hooks or just run it manually.  
 The CLI will generate a test suite from Aspecto server, based on real data that was collected and prepared beforehand.  
 The generated suite will be run against a url you will provide, could be localhost, staging, production or anything else.
