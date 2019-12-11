@@ -14,5 +14,16 @@
         "sourceType": "module"
     },
     "plugins": ["@typescript-eslint"],
-    "rules": {}
+    "rules": {
+        "no-empty": 0
+    },
+    "overrides": [
+        {
+            "files": ["**/*.ts", "**/*.tsx"],
+            "rules": {
+                "no-unused-vars": ["off"],
+                "no-undef": ["off"]
+            }
+        }
+    ]
 }

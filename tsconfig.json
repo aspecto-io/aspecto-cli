@@ -12,9 +12,9 @@
         "inlineSources": true,
         "types": ["node"],
         "noImplicitAny": true,
-        "allowSyntheticDefaultImports": true
-        // "noUnusedLocals": true,
-        // "noUnusedParameters": true
+        "allowSyntheticDefaultImports": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true
     },
     "include": ["src/**/*"],
     "exclude": ["**/node_modules/*"]

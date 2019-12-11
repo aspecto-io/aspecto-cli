@@ -19,5 +19,7 @@ export default (startTime: number, endTime: number, suiteSummaries: RouteTestSui
         testsCount,
         testsFailCount,
     };
+
+    return report;
     // TODO: report to remote service
 };

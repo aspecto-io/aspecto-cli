@@ -8,7 +8,7 @@ const run = async (entry: RouteTestEntry): Promise<RouteTestSuiteSummary> => {
     let total = entry.routeDetails.length;
 
     const results = await Promise.all(
-        entry.routeDetails.map(async (details: RouteDetails, i: number) => {
+        entry.routeDetails.map(async (details: RouteDetails) => {
             const testStartTime = Date.now();
             const request = constructRequest(details);
 
