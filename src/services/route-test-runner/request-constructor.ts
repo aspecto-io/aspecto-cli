@@ -1,5 +1,5 @@
 import { RouteDetails, VariableAnalysis, RequestDetailsPayload } from '../../types';
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 
 const constructPayload = (details?: RequestDetailsPayload): any => {
     if (!details) return {};
@@ -34,13 +34,14 @@ const constructQuery = (queryObject?: RequestDetailsPayload): string => {
 };
 
 export default (routeDetails: RouteDetails) => {
-    const config = {
+    const config: AxiosRequestConfig = {
         method: routeDetails.verb,
         baseURL: global.url,
         url: `${routeDetails.url}${constructQuery(routeDetails.queryParams)}`,
         data: constructPayload(routeDetails.requestBody),
         headers: constructPayload(routeDetails.requestHeaders),
         validateStatus: () => true,
+        timeout: 4000,
     };
 
     return () => axios.request(config);
