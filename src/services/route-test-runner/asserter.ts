@@ -11,11 +11,17 @@ const assertVariable = (name: string, expectedSchema: string, value: string) => 
     }
 };
 
+const isLeaf = (myVar: any) =>
+    typeof myVar === 'object' &&
+    myVar !== null &&
+    (myVar as any).hasOwnProperty('example') &&
+    (myVar as any).hasOwnProperty('valueType');
+
 const assertObject = (type: string, expected: RequestDetailsPayload, actual: any, errors: string[]) => {
     if (!expected && actual) throw new Error(`Expected to get an empty response, got ${actual}`);
     if (!expected) return;
 
-    if ((expected as VariableAnalysis).example) {
+    if (isLeaf(expected)) {
         try {
             assertVariable(
                 (expected as VariableAnalysis).name as string,

@@ -1,6 +1,6 @@
 {
     "name": "@aspecto/cli",
-    "version": "0.0.12",
+    "version": "0.0.13",
     "description": "Aspecto CLI",
     "main": "./dist/index.js",
     "scripts": {
