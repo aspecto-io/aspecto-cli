@@ -35,8 +35,10 @@ const assertObject = (type: string, expected: RequestDetailsPayload, actual: any
     }
 
     if (Array.isArray(expected)) {
-        expected.forEach((val: RequestDetailsPayload, i: number) => {
-            assertObject(type, val, actual[i], errors);
+        actual.forEach((val: RequestDetailsPayload, i: number) => {
+            if (expected[i] !== undefined) {
+                assertObject(type, expected[i], val, errors);
+            }
         });
         return;
     }
@@ -53,7 +55,14 @@ export default (routeDetails: RouteDetails, res: AxiosResponse) => {
     const errors: string[] = [];
 
     if (routeDetails.statusCode === 200) {
-        assertObject('Body', routeDetails.responseBody, res.data, errors);
+        if (
+            routeDetails.responseHeaders['content-type'].example.includes('json') &&
+            (routeDetails.responseBody as any).body
+        ) {
+            assertObject('Body', (routeDetails.responseBody as any).body, res.data, errors);
+        } else {
+            assertObject('Body', routeDetails.responseBody, res.data, errors);
+        }
         assertObject('Headers', routeDetails.responseHeaders, res.headers, errors);
     }
 
