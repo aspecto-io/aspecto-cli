@@ -41,7 +41,7 @@ export default (routeDetails: RouteDetails) => {
         data: constructPayload(routeDetails.requestBody),
         headers: constructPayload(routeDetails.requestHeaders),
         validateStatus: () => true,
-        timeout: 4000,
+        timeout: global.aspectoOptions.timeout || 5000,
     };
 
     return () => axios.request(config);

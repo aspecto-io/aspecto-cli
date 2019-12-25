@@ -17,7 +17,7 @@ const fetch = async (packageName: string, token: string): Promise<RouteTestEntry
     const getRouteDetails = (routeName: string) =>
         client.get<RouteDetails[]>(`/route?route=${encodeURIComponent(routeName)}${query.join('')}`, {
             headers,
-            timeout: 8000,
+            timeout: 30000,
         });
     const routeDetailsArray: RouteDetails[][] = (await Promise.all(routes.map(getRouteDetails))).map(
         (res: AxiosResponse) => res.data

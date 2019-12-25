@@ -7,6 +7,7 @@ export interface TestsOptions {
     allowCodes: string;
     skipSchema: boolean;
     env: string;
+    timeout: number;
 }
 
 export interface Route {

@@ -8,6 +8,7 @@ declare namespace NodeJS {
         allowCodes: string;
         skipSchema: boolean;
         env: string;
+        timeout: number;
     }
 
     export interface Global {

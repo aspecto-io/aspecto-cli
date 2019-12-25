@@ -18,6 +18,10 @@ program
     )
     .option('-e, --env <envs>', 'csv of environments the we generate the tests from (i.e. prod,dev), default is all')
     .option(
+        '-o, --timeout <timeout>',
+        'how long to wait before timing out an API call as part of the test suites, default is 5 seconds'
+    )
+    .option(
         '-m, --allow-methods <methods>',
         'csv of which type of http request methods to test (i.e. get,post,put), default is all'
     )
