@@ -1,5 +1,6 @@
 import { RouteDetails, VariableAnalysis, RequestDetailsPayload } from '../../types';
 import axios, { AxiosRequestConfig } from 'axios';
+import calculateTimeout from './timeout-calculator';
 
 const constructPayload = (details?: RequestDetailsPayload): any => {
     if (!details) return {};
@@ -41,7 +42,7 @@ export default (routeDetails: RouteDetails) => {
         data: constructPayload(routeDetails.requestBody),
         headers: constructPayload(routeDetails.requestHeaders),
         validateStatus: () => true,
-        timeout: global.aspectoOptions.timeout || 5000,
+        timeout: calculateTimeout(routeDetails),
     };
 
     return () => axios.request(config);

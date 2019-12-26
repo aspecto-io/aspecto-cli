@@ -15,5 +15,10 @@ declare namespace NodeJS {
         url: string;
         aspectoOptions: TestsOptions;
         verbose: boolean;
+        aspectoMetadata: userInteractionMetadata;
+    }
+
+    export interface userInteractionMetadata {
+        didSetTimeout: boolean;
     }
 }

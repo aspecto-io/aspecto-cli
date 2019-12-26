@@ -13,7 +13,9 @@
                 "test",
                 "http://localhost:8080",
                 "--package",
-                "aspecto-api-analytics"
+                "aspecto-api-analytics",
+                "-e",
+                "production"
             ],
             "runtimeArgs": ["-r", "ts-node/register"],
             "cwd": "${workspaceRoot}",

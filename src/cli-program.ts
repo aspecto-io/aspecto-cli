@@ -19,7 +19,8 @@ program
     .option('-e, --env <envs>', 'csv of environments the we generate the tests from (i.e. prod,dev), default is all')
     .option(
         '-o, --timeout <timeout>',
-        'how long to wait before timing out an API call as part of the test suites, default is 5 seconds'
+        `how long to wait before timing out an API call as part of the test suites, default is dynamic per route based our production analytics.
+You can override the dynamic timeout by setting this argument.`
     )
     .option(
         '-m, --allow-methods <methods>',

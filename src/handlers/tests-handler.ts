@@ -12,6 +12,7 @@ import summaryReporter from '../services/summary-reporter';
 const handleTestAction = async (url: string, options: TestsOptions) => {
     options.token = options.token || process.env.ASPECTO_TOKEN;
     options.failStrategy = options.failStrategy || 'soft';
+    global.aspectoMetadata = { didSetTimeout: !!options.timeout };
     options.timeout = options.timeout || 5000;
 
     global.aspectoOptions = options;

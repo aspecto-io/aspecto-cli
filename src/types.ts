@@ -51,6 +51,7 @@ export interface RouteDetails {
     responseHeaders: GenericObject;
     updatedAt: Date;
     hostname: string;
+    executionTime: number;
 }
 
 export interface RouteTestEntry {

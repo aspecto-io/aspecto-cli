@@ -49,7 +49,8 @@ const assertObject = (type: string, expected: RequestDetailsPayload, actual: any
 };
 
 export default (routeDetails: RouteDetails, res: AxiosResponse) => {
-    if (routeDetails.statusCode !== res.status) {
+    // Since 304 is cached, we won't fail a test.
+    if (routeDetails.statusCode !== res.status && routeDetails.statusCode !== 304) {
         throw new Error(`StatusCode does not match, expected ${routeDetails.statusCode}, got ${res.status}`);
     }
     const errors: string[] = [];
