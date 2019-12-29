@@ -11,7 +11,9 @@ export interface TestsOptions {
 }
 
 export interface Route {
-    _id: string;
+    type: 'incoming' | 'outgoing';
+    route: string;
+    hostname?: string;
 }
 
 type GenericObject = { [key: string]: any };

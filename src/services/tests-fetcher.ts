@@ -6,7 +6,8 @@ const client = axios.create({ baseURL: 'https://api-docs.aspecto.io/test' });
 const fetch = async (packageName: string, token: string): Promise<RouteTestEntry[]> => {
     const headers = { authorization: `Basic ${token}` };
     const routes = (await client.get<Route[]>(`/routes?package=${packageName}`, { headers, timeout: 8000 })).data
-        .map((x: Route) => x._id)
+        .filter((x: Route) => x.type !== 'outgoing')
+        .map((x: Route) => x.route)
         .filter((x: string) => x);
 
     const query: string[] = [`&package=${packageName}`];
