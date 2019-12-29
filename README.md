@@ -96,6 +96,11 @@ Alias `-f`. Relevant only when using `--allow-fail`.
 Soft will fail the process only on a failed test.  
 Strict will fail the process on any kind of failure (i.e. bad usage, failure to fetch tests).  
 
+
+#### `--timeout <timeout>`
+Alias `-o`. How long to wait (in milliseconds) before timing out an API call as part of the test suites, default is dynamic per route based our production analytics.
+You can override the dynamic timeout by setting this argument.
+
 #### `--verbose`
 
 Alias `-v`. Use this flag to print debug logs.
