@@ -1,14 +1,13 @@
 import axios, { AxiosResponse } from 'axios';
 import { Route, RouteDetails, RouteTestEntry } from '../types';
 
-const client = axios.create({ baseURL: 'https://api-docs.aspecto.io/test' });
+const client = axios.create({ baseURL: 'http://localhost:8089/api/v1/test' });
 
 const fetch = async (packageName: string, token: string): Promise<RouteTestEntry[]> => {
     const headers = { authorization: `Basic ${token}` };
     const routes = (await client.get<Route[]>(`/routes?package=${packageName}`, { headers, timeout: 8000 })).data
-        .filter((x: Route) => x.type !== 'outgoing')
-        .map((x: Route) => x.route)
-        .filter((x: string) => x);
+        .filter((x: Route) => x.route && x.type !== 'outgoing')
+        .map((x: Route) => x.route);
 
     const query: string[] = [`&package=${packageName}`];
     if (global.aspectoOptions.allowMethods) query.push(`&verb=${global.aspectoOptions.allowMethods}`);
@@ -20,9 +19,8 @@ const fetch = async (packageName: string, token: string): Promise<RouteTestEntry
             headers,
             timeout: 30000,
         });
-    const routeDetailsArray: RouteDetails[][] = (await Promise.all(routes.map(getRouteDetails))).map(
-        (res: AxiosResponse) => res.data
-    );
+
+    const routeDetailsArray: RouteDetails[][] = (await Promise.all(routes.map(getRouteDetails))).map((res) => res.data);
 
     const response: RouteTestEntry[] = [];
     routes.forEach((route: string, index: number) =>
