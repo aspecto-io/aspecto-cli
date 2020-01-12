@@ -18,7 +18,10 @@ export default (routeDetails: RouteDetails) => {
         baseURL: global.url,
         url: `${routeDetails.url}${constructQuery(routeDetails.queryParams)}`,
         data: routeDetails.requestBody,
-        headers: routeDetails.requestHeaders,
+        headers: {
+            ...routeDetails.requestHeaders,
+            'X-Origin': 'Aspecto-CLI',
+        },
         validateStatus: () => true,
         timeout: calculateTimeout(routeDetails),
         // timeout: 10000,
