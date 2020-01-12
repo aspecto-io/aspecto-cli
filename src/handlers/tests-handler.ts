@@ -21,7 +21,7 @@ const handleTestAction = async (url: string, options: TestsOptions) => {
     cli.action.start('Generating tests from Aspecto server');
 
     try {
-        tests = (await fetchTests(options.package!, options.token)).filter((x) => x.routeDetails.length > 0);
+        tests = (await fetchTests(options.package!)).filter((x) => x.routeDetails.length > 0);
     } catch (err) {
         handleError('Failed generating tests', err.stack);
     }
