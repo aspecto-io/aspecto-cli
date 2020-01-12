@@ -16,28 +16,24 @@ export interface Route {
     hostname?: string;
 }
 
-type GenericObject = { [key: string]: any };
-
-export interface VariableAnalysis {
-    name: string;
+export interface FieldMetadata {
+    path: string;
+    key: string;
     type: string;
-    isNull: boolean;
-    isMultiple: boolean;
     valueType: string;
-    children: any[];
     example: string;
 }
 
-export type RequestDetailsPayload =
-    | VariableAnalysis
-    | { [key: string]: RequestDetailsPayload }
-    | RequestDetailsPayload[];
+export type BodyMetadata = FieldMetadata | { [key: string]: BodyMetadata } | BodyMetadata[];
+
+export type StringObject = { [key: string]: string };
 
 export interface RouteDetails {
     _id: string;
     env: string;
     gitHash: string;
     packageVersion: string;
+    packageName: string;
     route: string;
     statusCode: number;
     token: string;
@@ -45,15 +41,22 @@ export interface RouteDetails {
     verb: 'get' | 'post' | 'put' | 'delete' | 'patch';
     createdAt: Date;
     functionChain: string;
-    queryParams?: RequestDetailsPayload;
-    params?: GenericObject;
-    requestBody?: RequestDetailsPayload;
-    requestHeaders: RequestDetailsPayload;
-    responseBody: RequestDetailsPayload;
-    responseHeaders: GenericObject;
+    queryParams?: StringObject;
+    params?: StringObject;
+    requestBody?: any;
+    requestHeaders: StringObject;
+    responseHeaders: StringObject;
     updatedAt: Date;
     hostname: string;
+    type: 'incoming' | 'outgoing';
     executionTime: number;
+    schemaHash: string;
+    rawResponseBody: any;
+    responseBodySchema: any;
+    responseMetadata: {
+        _id: string;
+        responseMetadata: BodyMetadata;
+    };
 }
 
 export interface RouteTestEntry {
@@ -61,16 +64,23 @@ export interface RouteTestEntry {
     routeDetails: RouteDetails[];
 }
 
-export interface RouteTestSuiteSummary {
-    totalTestCount: number;
-    failCount: number;
-    passCount: number;
-    routeName: string;
-    results: {
-        failed: boolean;
-        testName: string;
-        id: string;
-        failLog: string;
-        duration: number;
-    }[];
+interface AssertionResult {
+    testId: string;
+    statusCode: number;
+    packageName: string;
+    env: string;
+    gitHash: string;
+    route: string;
+    verb: string;
+    url: string;
+    success: boolean;
+    log?: string;
+    failedStep?: string;
+    stepFailure?: any;
+}
+
+export interface AssertionResponse {
+    route: string;
+    success: boolean;
+    assertions: AssertionResult[];
 }

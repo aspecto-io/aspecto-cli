@@ -1,51 +1,56 @@
-import { RouteTestEntry, RouteDetails, RouteTestSuiteSummary } from '../../types';
-import printer from '../../printers';
+import { RouteTestEntry, RouteDetails } from '../../types';
 import constructRequest from './request-constructor';
-import assert from './asserter';
 import 'colors';
 
-const run = async (entry: RouteTestEntry): Promise<RouteTestSuiteSummary> => {
-    let total = entry.routeDetails.length;
+interface RunResponse {
+    route: string;
+    results: any[];
+}
 
-    const results = await Promise.all(
+const run = async (entry: RouteTestEntry): Promise<RunResponse> => {
+    const responses: any[] = [];
+    await Promise.all(
         entry.routeDetails.map(async (details: RouteDetails) => {
             const testStartTime = Date.now();
             const request = constructRequest(details);
+            const toAssert: any = {
+                testId: details._id,
+                packageName: details.packageName,
+                env: details.env,
+                gitHash: details.gitHash,
+                route: details.route,
+                verb: details.verb,
+                url: details.url,
+                expected: {
+                    schema: details.responseBodySchema,
+                    schemaHash: details.schemaHash,
+                    metadata: details.responseMetadata.responseMetadata,
+                    headers: details.responseHeaders,
+                    statusCode: details.statusCode,
+                    executionTime: details.executionTime,
+                },
+            };
 
-            let failLog = '';
-            let failed = false;
             try {
                 const response = await request();
-                assert(details, response);
+                toAssert.actual = {
+                    body: response.data,
+                    headers: response.headers,
+                    statusCode: response.status,
+                    executionTime: Date.now() - testStartTime,
+                };
             } catch (err) {
-                failLog = err.message;
-                failed = true;
+                toAssert.actual = {
+                    error: err.message,
+                };
             }
-
-            const testName = `${details.verb} ${details.url} - ${details.statusCode} (env: ${details.env})`;
-
-            const duration = Date.now() - testStartTime;
-            return {
-                failed,
-                testName,
-                failLog,
-                duration,
-                id: details._id,
-            };
+            responses.push(toAssert);
         })
     );
 
-    const failCount = results.filter((x) => x.failed).length;
-    const passCount = total - failCount;
-
-    printer.printRouteSummary(results, failCount, entry.route);
-
     return {
-        totalTestCount: total,
-        failCount,
-        passCount,
-        routeName: entry.route,
-        results,
+        route: entry.route,
+        results: responses,
     };
 };
 

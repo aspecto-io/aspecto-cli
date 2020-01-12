@@ -1,63 +1,71 @@
 import { logger } from '../services/logger';
-import { RouteTestSuiteSummary } from '../types';
+import { AssertionResponse } from '../types';
 import 'colors';
 
-export const printRunSummary = (startTime: number, endTime: number, testsResponse: any) => {
-    const duration = endTime - startTime;
-
-    const routesCount = testsResponse.length;
-    const totalRoutesFailed = testsResponse.filter((res: RouteTestSuiteSummary) => res.failCount > 0).length;
-    const totalRoutesPassed = routesCount - totalRoutesFailed;
-
-    const testsCount = testsResponse.reduce(
-        (counter: number, entry: RouteTestSuiteSummary) => counter + entry.totalTestCount,
-        0
-    );
-    const totalTestsFailed = testsResponse.reduce(
-        (counter: number, entry: RouteTestSuiteSummary) => counter + entry.failCount,
-        0
-    );
-    const totalTestsPassed = testsCount - totalTestsFailed;
+const printRunSummary = (
+    startTime: number,
+    suitesCount: number,
+    suitesPassCount: number,
+    testCount: number,
+    testPassCount: number
+) => {
+    const duration = Date.now() - startTime;
+    const suitesFailCount = suitesCount - suitesPassCount;
+    const testsFailCount = testCount - testPassCount;
 
     logger.info(
         `${'\nRoutes:'.padEnd(7).bold} ${
-            totalRoutesFailed > 0 ? (`${totalRoutesFailed} failed`.bold as any).brightRed + ', ' : ''
-        }${(`${totalRoutesPassed} passed`.bold as any).brightGreen}, ${routesCount} total`
+            suitesFailCount > 0 ? (`${suitesFailCount} failed`.bold as any).brightRed + ', ' : ''
+        }${(`${suitesPassCount} passed`.bold as any).brightGreen}, ${suitesCount} total`
     );
     logger.info(
         `${'Tests:'.padEnd(7).bold} ${
-            totalTestsFailed > 0 ? (`${totalTestsFailed} failed`.bold as any).brightRed + ', ' : ''
-        }${(`${totalTestsPassed} passed`.bold as any).brightGreen}, ${testsCount} total`
+            testsFailCount > 0 ? (`${testsFailCount} failed`.bold as any).brightRed + ', ' : ''
+        }${(`${testPassCount} passed`.bold as any).brightGreen}, ${testCount} total`
     );
     const time = duration > 1000 ? `${duration / 1000}s` : `${duration}ms`;
     logger.info(`${'Time:'.padEnd(7).bold} ${time}`);
 };
 
-export const printRouteSummary = (results: any, failCount: number, routeName: string) => {
-    const badge =
-        (failCount === 0 ? '✅ ' : '❌ ') +
-        ' Route '.bold +
-        routeName.italic.bold +
-        (failCount === 0 ? ' passed!' : ' failed:').bold;
-    logger.info(badge);
+export const printAssertionResults = (results: AssertionResponse[], startTime: number) => {
+    const suitesCount = results.length;
+    let suitesPassCount = 0;
 
-    results.forEach((res: any) => {
-        logger.debug(
-            (res.failed ? ('  ✗ ' as any).brightRed : ('  ✓ ' as any).brightGreen) +
-                `${res.testName} (${res.duration}ms)`.gray
-        );
-    });
+    let testCount = 0;
+    let testPassCount = 0;
 
-    failCount > 0 && logger.newLine();
+    results.forEach((suiteResult) => {
+        if (suiteResult.success) suitesPassCount++;
 
-    results
-        .filter((res: any) => res.failed)
-        .forEach((res: any) => {
-            // @ts-ignore
-            logger.info(`  ● ${res.testName}`.italic.brightRed);
-            res.failLog.split('\n').forEach((x: string) => logger.info(`   ${x}`));
-            logger.newLine();
+        const badge =
+            (suiteResult.success ? '✅ ' : '❌ ') +
+            ' Route '.bold +
+            suiteResult.route.italic.bold +
+            (suiteResult.success ? ' passed!' : ' failed:').bold;
+        logger.info(badge);
+
+        suiteResult.assertions.forEach((routeAssert) => {
+            testCount++;
+            if (routeAssert.success) testPassCount++;
+
+            const testName = `${routeAssert.verb} ${routeAssert.url} - ${routeAssert.statusCode} (env: ${routeAssert.env})`;
+            logger.debug(
+                (!routeAssert.success ? ('  ✗ ' as any).brightRed : ('  ✓ ' as any).brightGreen) + testName.gray
+            );
         });
 
-    failCount === 0 && logger.debug('');
+        !suiteResult.success && logger.newLine();
+
+        suiteResult.assertions
+            .filter((r) => !r.success)
+            .forEach((routeAssert) => {
+                const testName = `${routeAssert.verb} ${routeAssert.url} - ${routeAssert.statusCode} (env: ${routeAssert.env})`;
+                // @ts-ignore
+                logger.info(`  ● ${testName}`.italic.brightRed);
+                routeAssert.log.split('\n').forEach((x: string) => logger.info(`   ${x}`));
+                logger.newLine();
+            });
+        if (suiteResult.success) logger.debug('');
+    });
+    printRunSummary(startTime, suitesCount, suitesPassCount, testCount, testPassCount);
 };
