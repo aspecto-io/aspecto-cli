@@ -6,7 +6,9 @@ const constructQuery = (queryObject?: StringObject): string => {
     const query: string[] = [];
     if (queryObject) {
         Object.entries(queryObject).forEach(([queryName, value]) => {
-            query.push(`${queryName}=${encodeURIComponent(value)}`);
+            if (Array.isArray(value)) {
+                value.forEach((v: string) => query.push(`${queryName}=${encodeURIComponent(v)}`));
+            } else query.push(`${queryName}=${encodeURIComponent(value)}`);
         });
     }
     return query.length > 0 ? '?' + query.join('&') : '';
