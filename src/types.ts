@@ -41,6 +41,7 @@ export interface RouteDetails {
     verb: 'get' | 'post' | 'put' | 'delete' | 'patch';
     createdAt: Date;
     functionChain: string;
+    fullUrl: string;
     queryParams?: StringObject;
     params?: StringObject;
     requestBody?: any;
