@@ -32,6 +32,10 @@ You can override the dynamic timeout by setting this argument.`
     )
     .option('-a, --allow-fail', 'Whether to fail the process')
     .option(
+        '--array-strict',
+        'Should fail test when the expected response schema contains array with items while the actual response has empty array, and vice-versa.'
+    )
+    .option(
         '-f, --fail-strategy <strategy>',
         'soft - fail the process only on failed tests. strict - fail the process on any kind of failure',
         'soft'
