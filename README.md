@@ -77,7 +77,7 @@ By default, we will create tests based on all http methods.
 
 Example: `--allow-methods POST,PUT`
 
-#### `--allow-codes`
+#### `--allow-codes <codes>`
 
 Alias `-c`. A csv of http status codes.
 This will tell our servers to generate the tests based on data collected from responses with status code meeting the allowed codes.  
@@ -96,6 +96,10 @@ Alias `-f`. Relevant only when using `--allow-fail`.
 Soft will fail the process only on a failed test.  
 Strict will fail the process on any kind of failure (i.e. bad usage, failure to fetch tests).  
 
+#### `--array-strict`
+
+Should fail test when the expected response schema contains array with items while the actual response has empty array, and vice-versa.  
+By default, those cases won't fail your tests.
 
 #### `--timeout <timeout>`
 Alias `-o`. How long to wait (in milliseconds) before timing out an API call as part of the test suites, default is dynamic per route based our production analytics.
