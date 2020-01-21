@@ -8,6 +8,7 @@ import routeTestRunner from '../services/route-test-runner';
 import printer from '../printers';
 import initializeConfig from '../services/init-config';
 import { assert } from '../services/assert';
+import checkUrl from '../services/url-checker';
 
 const handleTestAction = async (url: string, options: TestsOptions) => {
     //  ==== CONFIGURATION ===
@@ -15,6 +16,11 @@ const handleTestAction = async (url: string, options: TestsOptions) => {
     initializeConfig(url, options);
     logger.info('\n↗️  Aspecto Test Runner\n'.green.bold);
     printer.printParams();
+
+    if (!(await checkUrl(url))) {
+        logger.error(`URL ${url} is not reachable.`);
+        return;
+    }
 
     //  ==== FETCH TESTS ===
     let tests: RouteTestEntry[];
