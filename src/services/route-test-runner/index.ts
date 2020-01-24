@@ -8,6 +8,7 @@ interface RunResponse {
 }
 
 const run = async (entry: RouteTestEntry): Promise<RunResponse> => {
+    if (entry.routeDetails.length === 0) return;
     const responses: any[] = [];
     await Promise.all(
         entry.routeDetails.map(async (details: RouteDetails) => {

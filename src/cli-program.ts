@@ -16,7 +16,7 @@ program
         '-t, --token <token>',
         'Your authentication token, provided at https://app.aspecto.io/app/integration.\nAlternatively, can be passed as ASPECTO_TOKEN env param.'
     )
-    .option('-e, --env <envs>', 'csv of environments the we generate the tests from (i.e. prod,dev), default is all')
+    .requiredOption('-e, --env <envs>', 'csv of environments the we generate the tests from (i.e. prod,dev)')
     .option(
         '-o, --timeout <timeout>',
         `how long to wait before timing out an API call as part of the test suites, default is dynamic per route based our production analytics.
@@ -29,6 +29,10 @@ You can override the dynamic timeout by setting this argument.`
     .option(
         '-c, --allow-codes <codes>',
         'csv of which type of http response codes to test (i.e. 200,400,404), default is all'
+    )
+    .option(
+        '-g, --git-hash <git-hashes>',
+        'csv of which git-hashes of your service to base the generated tests on. If none provided, we will pick the latest one ourselves.'
     )
     .option('-a, --allow-fail', 'Whether to fail the process')
     .option(
