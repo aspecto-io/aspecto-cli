@@ -9,6 +9,7 @@ import printer from '../printers';
 import initializeConfig from '../services/init-config';
 import { assert } from '../services/assert';
 import checkUrl from '../services/url-checker';
+import printers from '../printers';
 
 const handleTestAction = async (url: string, options: TestsOptions) => {
     //  ==== CONFIGURATION ===
@@ -27,13 +28,15 @@ const handleTestAction = async (url: string, options: TestsOptions) => {
     cli.action.start('Generating tests from Aspecto server');
 
     try {
-        tests = (await fetchTests(options.package!)).filter((x) => x.routeDetails.length > 0);
+        tests = (await fetchTests(options.package!)).filter(
+            (x) => x.routeDetails.length > 0 || x.type === 'versions-metadata'
+        );
     } catch (err) {
         handleError('Failed generating tests', err.stack);
     }
 
     const testsCount = tests.reduce((counter: number, entry: RouteTestEntry) => counter + entry.routeDetails.length, 0);
-    cli.action.stop(`Generated a total of ${testsCount} tests 🙌🏼`);
+    cli.action.stop(`Generated a total of ${testsCount} tests 🎉`);
     const fetchEndTime = Date.now();
 
     if (testsCount === 0) {
@@ -41,6 +44,10 @@ const handleTestAction = async (url: string, options: TestsOptions) => {
         return;
     }
 
+    if (tests[0].type === 'versions-metadata') {
+        const versions = tests.shift().versions;
+        printers.printUsedVersion(versions);
+    }
     //  ==== RUN TESTS ===
     cli.action.start(`Running Aspecto API Tests`.bold as any);
     const testsResponse = await Promise.all(tests.map(routeTestRunner.run));

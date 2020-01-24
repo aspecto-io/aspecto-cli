@@ -8,6 +8,7 @@ export interface TestsOptions {
     skipSchema: boolean;
     env: string;
     timeout: number;
+    gitHash: string;
 }
 
 export interface Route {
@@ -63,6 +64,8 @@ export interface RouteDetails {
 export interface RouteTestEntry {
     route: string;
     routeDetails: RouteDetails[];
+    type?: string;
+    versions: any;
 }
 
 interface AssertionResult {
