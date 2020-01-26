@@ -69,6 +69,12 @@ By default, we will create tests based on data from all environments.
 
 Example: `--env production,staging`
 
+#### `--git-hash <hashes>`
+
+Alias `-g`. A csv of git hashes.
+This will tell our servers to generate the tests based on data collected in the provided git hashes.  
+By default, we will create tests based on the latest git hash we have.
+
 #### `--allow-methods <methods>`
 
 Alias `-m`. A csv of http methods.
