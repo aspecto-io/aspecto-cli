@@ -61,7 +61,7 @@ If you don't provide this option, we will try to get the name from the package.j
 Alias `-t`. Your authentication token, provided at https://app.aspecto.io/app/integration.  
 If non provided, we'll try to get it ourselves from the `ASPECTO_TOKEN` env param (process.env.ASPECTO_TOKEN).
 
-#### `---env <envs>`
+#### `--env <envs>`
 
 Alias `-e`. A csv of envs.  
 This will tell our servers to generate the tests based on data collected in the provided environments.  
