@@ -2,31 +2,31 @@ import 'colors';
 import { cli } from 'cli-ux';
 import { logger } from '../services/logger';
 
-export const printUsedVersion = (versions: any) => {
+export const printUsedVersion = (tests: any) => {
     logger.newLine();
     logger.info('Tests were generated based on:');
     logger.newLine();
 
-    cli.table(versions, {
+    cli.table(tests, {
         env: {
             minWidth: 15,
-            get: (row: any) => row.env,
+            get: (row: any) => row.envValues[0].env,
         },
         startAt: {
             minWidth: 25,
-            header: 'First Appeared',
+            header: 'Approved At',
             get: (row: any) =>
-                new Date(row.startTime).toLocaleDateString() + ' ' + new Date(row.startTime).toLocaleTimeString(),
+                new Date(row.createdAt).toLocaleDateString() + ' ' + new Date(row.createdAt).toLocaleTimeString(),
         },
         endAt: {
             minWidth: 25,
             header: 'Last Updated',
             get: (row: any) =>
-                new Date(row.endTime).toLocaleDateString() + ' ' + new Date(row.endTime).toLocaleTimeString(),
+                new Date(row.updatedAt).toLocaleDateString() + ' ' + new Date(row.updatedAt).toLocaleTimeString(),
         },
         gitHash: {
             header: 'Git Hash',
-            get: (row: any) => row.gitHash.trim(),
+            get: (row: any) => row.firstGitHash.trim(),
         },
     });
     logger.debug(`Tip: you can use the --git-hash flag to fully decide what to base your tests on`.gray);
