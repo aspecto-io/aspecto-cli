@@ -1,5 +1,5 @@
 import 'colors';
-import { TestsOptions, RouteTestEntry, AssertionResponse } from '../types';
+import { TestsOptions, RouteTestEntry } from '../types';
 import { cli } from 'cli-ux';
 import { logger } from '../services/logger';
 import fetchTests from '../services/tests-fetcher';
@@ -11,23 +11,7 @@ import { assert } from '../services/assert';
 import checkUrl from '../services/url-checker';
 import printers from '../printers';
 import { test } from '..';
-
-const aggregateTestsByRoute = (assertionResults: any[]): AssertionResponse[] => {
-    const byRouteMap = assertionResults.reduce((map, assertionResult) => {
-        if (!(assertionResult.route in map)) {
-            map[assertionResult.route] = {
-                route: assertionResult.route,
-                success: true,
-                assertions: [],
-            } as AssertionResponse;
-        }
-        const assertionResponse: AssertionResponse = map[assertionResult.route];
-        assertionResponse.assertions.push(assertionResult);
-        assertionResponse.success = assertionResponse.success && assertionResult.success;
-        return map;
-    }, {});
-    return Object.values(byRouteMap);
-};
+import { aggregateTestsByRoute } from '../services/test-aggregation';
 
 const handleTestAction = async (url: string, options: TestsOptions) => {
     //  ==== CONFIGURATION ===
