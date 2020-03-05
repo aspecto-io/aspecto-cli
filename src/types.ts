@@ -61,11 +61,30 @@ export interface RouteDetails {
     };
 }
 
-export interface RouteTestEntry {
+export interface EnvValue {
+    env: string;
+    values: {
+        url: string;
+        requestBody: any;
+        urlParams: any;
+        requestHeaders: any;
+        queryParams: any;
+    };
+}
+
+export interface AspectoTest {
+    _id: string;
+    token: string;
+    description: string;
+    envValues: EnvValue[];
+    executionTime: number;
+    firstGitHash: string;
+    packageName: string;
     route: string;
-    routeDetails: RouteDetails[];
-    type?: string;
-    versions: any;
+    statusCode: number;
+    verb: string;
+    createdAt: string;
+    updatedAt: string;
 }
 
 interface AssertionResult {
@@ -81,6 +100,24 @@ interface AssertionResult {
     log?: string;
     failedStep?: string;
     stepFailure?: any;
+}
+
+export interface TestRunResult {
+    testId: string;
+    packageName: string;
+    env: string;
+    gitHash: string;
+    route: string;
+    verb: string;
+    statusCode: number;
+    url: string;
+    actual: {
+        body?: string;
+        headers?: any[];
+        statusCode?: number;
+        executionTimeMs?: number;
+        error?: any;
+    };
 }
 
 export interface AssertionResponse {

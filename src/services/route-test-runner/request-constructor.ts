@@ -1,5 +1,5 @@
-import { StringObject } from '../../types';
-import { AxiosRequestConfig } from 'axios';
+import { StringObject, AspectoTest } from '../../types';
+import { AxiosRequestConfig, Method } from 'axios';
 import calculateTimeout from './timeout-calculator';
 
 const constructQuery = (queryObject?: StringObject): string => {
@@ -14,11 +14,11 @@ const constructQuery = (queryObject?: StringObject): string => {
     return query.length > 0 ? '?' + query.join('&') : '';
 };
 
-export default (test: any): AxiosRequestConfig => {
+export default (test: AspectoTest): AxiosRequestConfig => {
     const envValues = test.envValues[0].values;
 
     const config: AxiosRequestConfig = {
-        method: test.verb,
+        method: test.verb as Method,
         baseURL: global.url,
         url: `${envValues.url}${constructQuery(envValues.queryParams)}`,
         data: envValues.requestBody,

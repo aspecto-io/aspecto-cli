@@ -1,8 +1,9 @@
 import constructRequest from './request-constructor';
 import axios, { AxiosRequestConfig } from 'axios';
 import 'colors';
+import { AspectoTest } from '../../types';
 
-const run = async (test: any): Promise<any> => {
+const run = async (test: AspectoTest): Promise<any> => {
     const requestConfig: AxiosRequestConfig = constructRequest(test);
 
     const toAssert: any = {
@@ -27,7 +28,7 @@ const run = async (test: any): Promise<any> => {
             executionTimeMs: Date.now() - testStartTime,
         };
     } catch (err) {
-        toAssert.response = {
+        toAssert.actual = {
             error: err.message,
         };
     }

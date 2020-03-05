@@ -1,8 +1,9 @@
 import 'colors';
 import { cli } from 'cli-ux';
 import { logger } from '../services/logger';
+import { AspectoTest } from '../types';
 
-export const printUsedVersion = (tests: any) => {
+export const printUsedVersion = (tests: AspectoTest[]) => {
     logger.newLine();
     logger.info('Tests were generated based on:');
     logger.newLine();

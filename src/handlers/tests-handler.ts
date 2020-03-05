@@ -1,5 +1,5 @@
 import 'colors';
-import { TestsOptions, RouteTestEntry } from '../types';
+import { TestsOptions, AspectoTest, TestRunResult } from '../types';
 import { cli } from 'cli-ux';
 import { logger } from '../services/logger';
 import fetchTests from '../services/tests-fetcher';
@@ -11,7 +11,7 @@ import { assert } from '../services/assert';
 import checkUrl from '../services/url-checker';
 import printers from '../printers';
 import { test } from '..';
-import { aggregateTestsByRoute } from '../services/test-aggregation';
+import { aggregateTestsByRoute } from '../services/tests-aggregation';
 
 const handleTestAction = async (url: string, options: TestsOptions) => {
     //  ==== CONFIGURATION ===
@@ -26,7 +26,7 @@ const handleTestAction = async (url: string, options: TestsOptions) => {
     }
 
     //  ==== FETCH TESTS ===
-    let tests: RouteTestEntry[];
+    let tests: AspectoTest[];
     cli.action.start('Generating tests from Aspecto server');
 
     try {
@@ -47,13 +47,13 @@ const handleTestAction = async (url: string, options: TestsOptions) => {
 
     //  ==== RUN TESTS ===
     cli.action.start(`Running Aspecto API Tests`.bold as any);
-    const testsResponse = await Promise.all(tests.map(routeTestRunner.run));
+    const testsResponses: TestRunResult[] = await Promise.all(tests.map(routeTestRunner.run));
     cli.action.stop(`Test execution completed, now asserting.`);
     const runEndTime = Date.now();
 
     // === ASSERT TESTS ===
     cli.action.start(`Asserting tests..`.bold as any);
-    const assertion = await assert(testsResponse, fetchEndTime - startTime, runEndTime - fetchEndTime);
+    const assertion = await assert(testsResponses, fetchEndTime - startTime, runEndTime - fetchEndTime);
     cli.action.stop(`Done.\n`.bold as any);
     const assertionResultsByRoute = aggregateTestsByRoute(assertion);
     printer.printAssertionResults(assertionResultsByRoute, startTime);
