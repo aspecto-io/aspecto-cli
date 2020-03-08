@@ -10,7 +10,6 @@ const run = async (test: AspectoTest): Promise<any> => {
         testId: test._id,
         packageName: test.packageName,
         env: test.envValues[0].env,
-        gitHash: test.firstGitHash,
         route: test.route,
         verb: test.verb,
         statusCode: test.statusCode,

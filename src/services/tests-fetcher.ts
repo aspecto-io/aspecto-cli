@@ -9,7 +9,6 @@ const fetch = async (packageName: string): Promise<AspectoTest[]> => {
     if (global.aspectoOptions.gitHash) query.push(`gitHash=${global.aspectoOptions.gitHash}`);
 
     const response = await client.get(`/approved?${query.join('&')}`);
-    console.log(response.data);
     return response.data as AspectoTest[];
 };
 

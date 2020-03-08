@@ -78,7 +78,6 @@ export interface AspectoTest {
     description: string;
     envValues: EnvValue[];
     executionTime: number;
-    firstGitHash: string;
     packageName: string;
     route: string;
     statusCode: number;

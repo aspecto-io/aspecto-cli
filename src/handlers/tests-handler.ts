@@ -10,7 +10,6 @@ import initializeConfig from '../services/init-config';
 import { assert } from '../services/assert';
 import checkUrl from '../services/url-checker';
 import printers from '../printers';
-import { test } from '..';
 import { aggregateTestsByRoute } from '../services/tests-aggregation';
 
 const handleTestAction = async (url: string, options: TestsOptions) => {
@@ -36,8 +35,8 @@ const handleTestAction = async (url: string, options: TestsOptions) => {
     }
 
     cli.action.stop(`Generated a total of ${tests.length} tests 🎉`);
-    if (test.length === 0) {
-        logger.info('Not enough data, goodbye!'.bold);
+    if (tests.length === 0) {
+        logger.info('Not tests to run, goodbye!'.bold);
         return;
     }
 
