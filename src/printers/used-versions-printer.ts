@@ -30,6 +30,5 @@ export const printUsedVersion = (tests: AspectoTest[]) => {
                 new Date(row.updatedAt).toLocaleDateString() + ' ' + new Date(row.updatedAt).toLocaleTimeString(),
         },
     });
-    logger.debug(`Tip: you can use the --git-hash flag to fully decide what to base your tests on`.gray);
     logger.newLine();
 };

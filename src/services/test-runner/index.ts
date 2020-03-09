@@ -1,12 +1,12 @@
 import constructRequest from './request-constructor';
 import axios, { AxiosRequestConfig } from 'axios';
 import 'colors';
-import { AspectoTest } from '../../types';
+import { AspectoTest, TestRunResult } from '../../types';
 
-const run = async (test: AspectoTest): Promise<any> => {
+const run = async (test: AspectoTest): Promise<TestRunResult> => {
     const requestConfig: AxiosRequestConfig = constructRequest(test);
 
-    const toAssert: any = {
+    const toAssert: TestRunResult = {
         testId: test._id,
         packageName: test.packageName,
         env: test.envValues[0].env,
@@ -14,6 +14,7 @@ const run = async (test: AspectoTest): Promise<any> => {
         verb: test.verb,
         statusCode: test.statusCode,
         url: requestConfig.url,
+        actual: {},
     };
 
     const testStartTime = Date.now();

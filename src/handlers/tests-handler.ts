@@ -4,7 +4,7 @@ import { cli } from 'cli-ux';
 import { logger } from '../services/logger';
 import fetchTests from '../services/tests-fetcher';
 import handleError from '../utils/error-handler';
-import routeTestRunner from '../services/route-test-runner';
+import routeTestRunner from '../services/test-runner';
 import printer from '../printers';
 import initializeConfig from '../services/init-config';
 import { assert } from '../services/assert';
@@ -36,13 +36,15 @@ const handleTestAction = async (url: string, options: TestsOptions) => {
 
     cli.action.stop(`Generated a total of ${tests.length} tests 🎉`);
     if (tests.length === 0) {
-        logger.info('Not tests to run, goodbye!'.bold);
+        logger.info('No tests to run, goodbye!'.bold);
         return;
     }
 
     const fetchEndTime = Date.now();
 
-    printers.printUsedVersion(tests);
+    if (global.verbose) {
+        printers.printUsedVersion(tests);
+    }
 
     //  ==== RUN TESTS ===
     cli.action.start(`Running Aspecto API Tests`.bold as any);

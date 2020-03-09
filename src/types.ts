@@ -8,7 +8,6 @@ export interface TestsOptions {
     skipSchema: boolean;
     env: string;
     timeout: number;
-    gitHash: string;
 }
 
 export interface Route {
@@ -28,38 +27,6 @@ export interface FieldMetadata {
 export type BodyMetadata = FieldMetadata | { [key: string]: BodyMetadata } | BodyMetadata[];
 
 export type StringObject = { [key: string]: string };
-
-export interface RouteDetails {
-    _id: string;
-    env: string;
-    gitHash: string;
-    packageVersion: string;
-    packageName: string;
-    route: string;
-    statusCode: number;
-    token: string;
-    url: string;
-    verb: 'get' | 'post' | 'put' | 'delete' | 'patch';
-    createdAt: Date;
-    functionChain: string;
-    fullUrl: string;
-    queryParams?: StringObject;
-    params?: StringObject;
-    requestBody?: any;
-    requestHeaders: StringObject;
-    responseHeaders: StringObject;
-    updatedAt: Date;
-    hostname: string;
-    type: 'incoming' | 'outgoing';
-    executionTime: number;
-    schemaHash: string;
-    rawResponseBody: any;
-    responseBodySchema: any;
-    responseMetadata: {
-        _id: string;
-        responseMetadata: BodyMetadata;
-    };
-}
 
 export interface EnvValue {
     env: string;
@@ -91,7 +58,6 @@ interface AssertionResult {
     statusCode: number;
     packageName: string;
     env: string;
-    gitHash: string;
     route: string;
     verb: string;
     url: string;
@@ -105,7 +71,6 @@ export interface TestRunResult {
     testId: string;
     packageName: string;
     env: string;
-    gitHash: string;
     route: string;
     verb: string;
     statusCode: number;

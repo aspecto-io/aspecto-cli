@@ -30,15 +30,7 @@ You can override the dynamic timeout by setting this argument.`
         '-c, --allow-codes <codes>',
         'csv of which type of http response codes to test (i.e. 200,400,404), default is all'
     )
-    .option(
-        '-g, --git-hash <git-hashes>',
-        'csv of which git-hashes of your service to base the generated tests on. If none provided, we will pick the latest one ourselves.'
-    )
     .option('-a, --allow-fail', 'Whether to fail the process')
-    .option(
-        '--array-strict',
-        'Should fail test when the expected response schema contains array with items while the actual response has empty array, and vice-versa.'
-    )
     .option(
         '-f, --fail-strategy <strategy>',
         'soft - fail the process only on failed tests. strict - fail the process on any kind of failure',
