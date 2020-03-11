@@ -5,5 +5,5 @@ import { printGeneratedTests } from './generated-tests-printer';
 export default {
     printParams,
     printAssertionResults,
-    printUsedVersion: printGeneratedTests,
+    printGeneratedTests: printGeneratedTests,
 };
