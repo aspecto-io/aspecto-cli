@@ -38,8 +38,6 @@ const getDefaultValue = (option: string) => {
         case 'allowCodes':
         case 'env':
             return 'all';
-        case 'gitHash':
-            return 'latest';
         default:
             return 'false';
     }
