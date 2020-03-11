@@ -9,7 +9,6 @@ declare namespace NodeJS {
         skipSchema: boolean;
         env: string;
         timeout: number;
-        gitHash: string;
     }
 
     export interface Global {

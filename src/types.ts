@@ -8,7 +8,6 @@ export interface TestsOptions {
     skipSchema: boolean;
     env: string;
     timeout: number;
-    gitHash: string;
 }
 
 export interface Route {
@@ -29,43 +28,29 @@ export type BodyMetadata = FieldMetadata | { [key: string]: BodyMetadata } | Bod
 
 export type StringObject = { [key: string]: string };
 
-export interface RouteDetails {
-    _id: string;
+export interface EnvValue {
     env: string;
-    gitHash: string;
-    packageVersion: string;
-    packageName: string;
-    route: string;
-    statusCode: number;
-    token: string;
-    url: string;
-    verb: 'get' | 'post' | 'put' | 'delete' | 'patch';
-    createdAt: Date;
-    functionChain: string;
-    fullUrl: string;
-    queryParams?: StringObject;
-    params?: StringObject;
-    requestBody?: any;
-    requestHeaders: StringObject;
-    responseHeaders: StringObject;
-    updatedAt: Date;
-    hostname: string;
-    type: 'incoming' | 'outgoing';
-    executionTime: number;
-    schemaHash: string;
-    rawResponseBody: any;
-    responseBodySchema: any;
-    responseMetadata: {
-        _id: string;
-        responseMetadata: BodyMetadata;
+    values: {
+        url: string;
+        requestBody: any;
+        urlParams: any;
+        requestHeaders: any;
+        queryParams: any;
     };
 }
 
-export interface RouteTestEntry {
+export interface AspectoTest {
+    _id: string;
+    token: string;
+    description: string;
+    envValues: EnvValue[];
+    executionTime: number;
+    packageName: string;
     route: string;
-    routeDetails: RouteDetails[];
-    type?: string;
-    versions: any;
+    statusCode: number;
+    verb: string;
+    createdAt: string;
+    updatedAt: string;
 }
 
 interface AssertionResult {
@@ -73,7 +58,6 @@ interface AssertionResult {
     statusCode: number;
     packageName: string;
     env: string;
-    gitHash: string;
     route: string;
     verb: string;
     url: string;
@@ -81,6 +65,23 @@ interface AssertionResult {
     log?: string;
     failedStep?: string;
     stepFailure?: any;
+}
+
+export interface TestRunResult {
+    testId: string;
+    packageName: string;
+    env: string;
+    route: string;
+    verb: string;
+    statusCode: number;
+    url: string;
+    actual: {
+        body?: string;
+        headers?: any[];
+        statusCode?: number;
+        executionTimeMs?: number;
+        error?: any;
+    };
 }
 
 export interface AssertionResponse {
