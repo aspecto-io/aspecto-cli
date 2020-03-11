@@ -43,7 +43,7 @@ const handleTestAction = async (url: string, options: TestsOptions) => {
     const fetchEndTime = Date.now();
 
     if (global.verbose) {
-        printers.printUsedVersion(tests);
+        printers.printGeneratedTests(tests);
     }
 
     //  ==== RUN TESTS ===
