@@ -25,6 +25,7 @@ const run = async (test: AspectoTest): Promise<TestRunResult> => {
             queryParams: requestConfig.params,
             headers: requestConfig.headers,
             body: requestConfig.data,
+            verb: requestConfig.method,
         },
         actual: {},
     };

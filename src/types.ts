@@ -86,6 +86,7 @@ export interface TestRunResult {
         queryParams: any;
         headers: any;
         body: string;
+        verb: string;
     };
     actual: {
         body?: string;
