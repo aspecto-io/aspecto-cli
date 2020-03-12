@@ -75,6 +75,17 @@ export interface TestRunResult {
     verb: string;
     statusCode: number;
     url: string;
+    testSnapshot: {
+        description: string;
+        route: string;
+        statusCode: number;
+    };
+    actualRequest: {
+        baseURL: string;
+        queryParams: any;
+        headers: any;
+        body: string;
+    };
     actual: {
         body?: string;
         headers?: any[];
