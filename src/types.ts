@@ -35,7 +35,7 @@ export interface EnvValue {
         requestBody: any;
         urlParams: any;
         requestHeaders: any;
-        queryParams: any;
+        queryPrams: any; // there is an spelling mistake here which goes all the way to mongo
     };
 }
 
@@ -81,6 +81,7 @@ export interface TestRunResult {
         statusCode: number;
     };
     actualRequest: {
+        url: string;
         baseURL: string;
         queryParams: any;
         headers: any;
