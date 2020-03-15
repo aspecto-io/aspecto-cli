@@ -24,21 +24,21 @@ const run = async (test: AspectoTest): Promise<TestRunResult> => {
             body: requestConfig.data,
             verb: requestConfig.method,
         },
-        actual: {},
+        actualResponse: {},
     };
 
     const testStartTime = Date.now();
 
     try {
         const httpResponse = await axios.request(requestConfig);
-        toAssert.actual = {
+        toAssert.actualResponse = {
             body: httpResponse.data,
             headers: httpResponse.headers,
             statusCode: httpResponse.status,
             executionTimeMs: Date.now() - testStartTime,
         };
     } catch (err) {
-        toAssert.actual = {
+        toAssert.actualResponse = {
             error: err.message,
         };
     }

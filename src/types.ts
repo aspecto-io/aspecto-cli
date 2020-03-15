@@ -90,7 +90,7 @@ export interface TestRunResult {
         body: string;
         verb: string;
     };
-    actual: {
+    actualResponse: {
         body?: string;
         headers?: any[];
         statusCode?: number;
