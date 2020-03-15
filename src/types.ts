@@ -35,7 +35,7 @@ export interface EnvValue {
         requestBody: any;
         urlParams: any;
         requestHeaders: any;
-        queryPrams: any; // there is an spelling mistake here which goes all the way to mongo
+        queryPrams: any; // there is a spelling mistake here which goes all the way to mongo
     };
 }
 
