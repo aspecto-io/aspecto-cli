@@ -63,14 +63,15 @@ interface AssertionResult {
     actualRequest: {
         url: string;
     };
-    url: string;
+    assertionResult: {
+        success: boolean;
+        log?: string;
+        failedStep?: string;
+        stepFailure?: any;
+    };
     testId: string;
     packageName: string;
     env: string;
-    success: boolean;
-    log?: string;
-    failedStep?: string;
-    stepFailure?: any;
 }
 
 export interface TestRunResult {

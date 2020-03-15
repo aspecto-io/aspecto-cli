@@ -45,24 +45,25 @@ export const printAssertionResults = (results: AssertionResponse[], startTime: n
         logger.info(badge);
 
         suiteResult.assertions.forEach((routeAssert) => {
+            const assertionResult = routeAssert.assertionResult;
             testCount++;
-            if (routeAssert.success) testPassCount++;
+            if (assertionResult.success) testPassCount++;
 
             const testName = `${routeAssert.testSnapshot.verb} ${routeAssert.actualRequest.url} - ${routeAssert.testSnapshot.statusCode} (env: ${routeAssert.env})`;
             logger.debug(
-                (!routeAssert.success ? ('  ✗ ' as any).brightRed : ('  ✓ ' as any).brightGreen) + testName.gray
+                (!assertionResult.success ? ('  ✗ ' as any).brightRed : ('  ✓ ' as any).brightGreen) + testName.gray
             );
         });
 
         !suiteResult.success && logger.newLine();
 
         suiteResult.assertions
-            .filter((r) => !r.success)
+            .filter((r) => !r.assertionResult.success)
             .forEach((routeAssert) => {
                 const testName = `${routeAssert.testSnapshot.verb} ${routeAssert.actualRequest.url} - ${routeAssert.testSnapshot.statusCode} (env: ${routeAssert.env})`;
                 // @ts-ignore
                 logger.info(`  ● ${testName}`.italic.brightRed);
-                routeAssert.log.split('\n').forEach((x: string) => logger.info(`   ${x}`));
+                routeAssert.assertionResult.log.split('\n').forEach((x: string) => logger.info(`   ${x}`));
                 logger.newLine();
             });
         if (suiteResult.success) logger.debug('');
