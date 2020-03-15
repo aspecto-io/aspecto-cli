@@ -59,6 +59,7 @@ interface AssertionResult {
         statusCode: number;
         route: string;
         verb: string;
+        packageName: string;
     };
     actualRequest: {
         url: string;
@@ -70,15 +71,14 @@ interface AssertionResult {
         stepFailure?: any;
     };
     testId: string;
-    packageName: string;
     env: string;
 }
 
 export interface TestRunResult {
     testId: string;
-    packageName: string;
     env: string;
     testSnapshot: {
+        packageName: string;
         description: string;
         route: string;
         statusCode: number;

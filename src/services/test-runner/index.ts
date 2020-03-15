@@ -8,9 +8,9 @@ const run = async (test: AspectoTest): Promise<TestRunResult> => {
 
     const toAssert: TestRunResult = {
         testId: test._id,
-        packageName: test.packageName,
         env: test.envValues[0].env,
         testSnapshot: {
+            packageName: test.packageName,
             description: test.description,
             route: test.route,
             statusCode: test.statusCode,
