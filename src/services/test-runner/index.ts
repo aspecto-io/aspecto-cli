@@ -15,6 +15,7 @@ const run = async (test: AspectoTest): Promise<TestRunResult> => {
             route: test.route,
             statusCode: test.statusCode,
             verb: test.verb,
+            responseBodySchemaHash: test.responseBodySchemaHash,
         },
         actualRequest: {
             url: requestConfig.url,

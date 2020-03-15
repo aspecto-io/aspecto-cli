@@ -51,6 +51,7 @@ export interface AspectoTest {
     verb: string;
     createdAt: string;
     updatedAt: string;
+    responseBodySchemaHash: string;
 }
 
 interface AssertionResult {
@@ -81,6 +82,7 @@ export interface TestRunResult {
         route: string;
         statusCode: number;
         verb: string;
+        responseBodySchemaHash: string;
     };
     actualRequest: {
         url: string;
