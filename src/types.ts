@@ -35,7 +35,7 @@ export interface EnvValue {
         requestBody: any;
         urlParams: any;
         requestHeaders: any;
-        queryParams: any;
+        queryPrams: any; // there is a spelling mistake here which goes all the way to mongo
     };
 }
 
@@ -51,31 +51,49 @@ export interface AspectoTest {
     verb: string;
     createdAt: string;
     updatedAt: string;
+    responseBodySchemaHash: string;
 }
 
 interface AssertionResult {
+    testSnapshot: {
+        statusCode: number;
+        route: string;
+        verb: string;
+        packageName: string;
+    };
+    actualRequest: {
+        url: string;
+    };
+    assertionResult: {
+        success: boolean;
+        log?: string;
+        failedStep?: string;
+        stepFailure?: any;
+    };
     testId: string;
-    statusCode: number;
-    packageName: string;
     env: string;
-    route: string;
-    verb: string;
-    url: string;
-    success: boolean;
-    log?: string;
-    failedStep?: string;
-    stepFailure?: any;
 }
 
 export interface TestRunResult {
     testId: string;
-    packageName: string;
     env: string;
-    route: string;
-    verb: string;
-    statusCode: number;
-    url: string;
-    actual: {
+    testSnapshot: {
+        packageName: string;
+        description: string;
+        route: string;
+        statusCode: number;
+        verb: string;
+        responseBodySchemaHash: string;
+    };
+    actualRequest: {
+        url: string;
+        baseURL: string;
+        queryParams: any;
+        headers: any;
+        body: string;
+        verb: string;
+    };
+    actualResponse: {
         body?: string;
         headers?: any[];
         statusCode?: number;

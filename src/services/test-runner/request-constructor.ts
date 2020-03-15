@@ -20,7 +20,7 @@ export default (test: AspectoTest): AxiosRequestConfig => {
     const config: AxiosRequestConfig = {
         method: test.verb as Method,
         baseURL: global.url,
-        url: `${envValues.url}${constructQuery(envValues.queryParams)}`,
+        url: `${envValues.url}${constructQuery(envValues.queryPrams)}`,
         data: envValues.requestBody,
         headers: {
             ...envValues.requestHeaders,
