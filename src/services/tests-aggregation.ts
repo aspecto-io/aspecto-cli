@@ -2,14 +2,15 @@ import { AssertionResponse } from '../types';
 
 export const aggregateTestsByRoute = (assertionResults: any[]): AssertionResponse[] => {
     const byRouteMap = assertionResults.reduce((map, assertionResult) => {
-        if (!(assertionResult.route in map)) {
-            map[assertionResult.route] = {
-                route: assertionResult.route,
+        const currRoute: string = assertionResult.testSnapshot.route;
+        if (!(currRoute in map)) {
+            map[currRoute] = {
+                route: currRoute,
                 success: true,
                 assertions: [],
             } as AssertionResponse;
         }
-        const assertionResponse: AssertionResponse = map[assertionResult.route];
+        const assertionResponse: AssertionResponse = map[currRoute];
         assertionResponse.assertions.push(assertionResult);
         assertionResponse.success = assertionResponse.success && assertionResult.success;
         return map;
