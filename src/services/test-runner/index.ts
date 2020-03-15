@@ -10,14 +10,11 @@ const run = async (test: AspectoTest): Promise<TestRunResult> => {
         testId: test._id,
         packageName: test.packageName,
         env: test.envValues[0].env,
-        route: test.route,
-        verb: test.verb,
-        statusCode: test.statusCode,
-        url: requestConfig.url,
         testSnapshot: {
             description: test.description,
             route: test.route,
             statusCode: test.statusCode,
+            verb: test.verb,
         },
         actualRequest: {
             url: requestConfig.url,

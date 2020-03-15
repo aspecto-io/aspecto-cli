@@ -48,7 +48,7 @@ export const printAssertionResults = (results: AssertionResponse[], startTime: n
             testCount++;
             if (routeAssert.success) testPassCount++;
 
-            const testName = `${routeAssert.verb} ${routeAssert.url} - ${routeAssert.statusCode} (env: ${routeAssert.env})`;
+            const testName = `${routeAssert.testSnapshot.verb} ${routeAssert.actualRequest.url} - ${routeAssert.testSnapshot.statusCode} (env: ${routeAssert.env})`;
             logger.debug(
                 (!routeAssert.success ? ('  ✗ ' as any).brightRed : ('  ✓ ' as any).brightGreen) + testName.gray
             );
@@ -59,7 +59,7 @@ export const printAssertionResults = (results: AssertionResponse[], startTime: n
         suiteResult.assertions
             .filter((r) => !r.success)
             .forEach((routeAssert) => {
-                const testName = `${routeAssert.verb} ${routeAssert.url} - ${routeAssert.statusCode} (env: ${routeAssert.env})`;
+                const testName = `${routeAssert.testSnapshot.verb} ${routeAssert.actualRequest.url} - ${routeAssert.testSnapshot.statusCode} (env: ${routeAssert.env})`;
                 // @ts-ignore
                 logger.info(`  ● ${testName}`.italic.brightRed);
                 routeAssert.log.split('\n').forEach((x: string) => logger.info(`   ${x}`));

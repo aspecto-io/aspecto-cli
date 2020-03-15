@@ -54,13 +54,18 @@ export interface AspectoTest {
 }
 
 interface AssertionResult {
+    testSnapshot: {
+        statusCode: number;
+        route: string;
+        verb: string;
+    };
+    actualRequest: {
+        url: string;
+    };
+    url: string;
     testId: string;
-    statusCode: number;
     packageName: string;
     env: string;
-    route: string;
-    verb: string;
-    url: string;
     success: boolean;
     log?: string;
     failedStep?: string;
@@ -71,14 +76,11 @@ export interface TestRunResult {
     testId: string;
     packageName: string;
     env: string;
-    route: string;
-    verb: string;
-    statusCode: number;
-    url: string;
     testSnapshot: {
         description: string;
         route: string;
         statusCode: number;
+        verb: string;
     };
     actualRequest: {
         url: string;
