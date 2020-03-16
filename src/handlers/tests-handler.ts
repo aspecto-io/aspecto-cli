@@ -2,7 +2,8 @@ import 'colors';
 import { TestsOptions, AspectoTest, TestRunResult } from '../types';
 import { cli } from 'cli-ux';
 import { logger } from '../services/logger';
-import fetchTests from '../services/tests-fetcher';
+import { fetchAllTests } from '../services/tests-fetcher';
+import { filterTests } from '../services/tests-filter';
 import handleError from '../utils/error-handler';
 import routeTestRunner from '../services/test-runner';
 import printer from '../printers';
@@ -29,7 +30,8 @@ const handleTestAction = async (url: string, options: TestsOptions) => {
     cli.action.start('Generating tests from Aspecto server');
 
     try {
-        tests = await fetchTests(options.package!);
+        const allTests: AspectoTest[] = await fetchAllTests(options.package!);
+        tests = filterTests(allTests);
     } catch (err) {
         handleError('Failed generating tests', err.stack);
     }
