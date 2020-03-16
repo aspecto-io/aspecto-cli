@@ -1,5 +1,5 @@
 import { AspectoTest } from '../types';
-import { logger } from '../services/logger';
+import { logFilteredTests } from '../printers/tests-filter-printer';
 
 const applyFilter = (tests: AspectoTest[], filterData: any): [AspectoTest[], any] => {
     const filterDataWithCount = { ...filterData };
@@ -32,38 +32,15 @@ const applyFilter = (tests: AspectoTest[], filterData: any): [AspectoTest[], any
     return [filtered, filterDataWithCount];
 };
 
-const logFiltered = (origTests: AspectoTest[], filteredTests: AspectoTest[], filterData: any) => {
-    if (origTests.length == filteredTests.length) return;
-
-    const testsFiltered = origTests.length - filteredTests.length;
-    logger.info(`${testsFiltered}\\${origTests.length} tests were filtered due to command line filter options`);
-
-    if (global.verbose) {
-        if (filterData.verb.filteredCount > 0) {
-            logger.info(`${filterData.verb.filteredCount} tests did not match method '${filterData.verb.filter}'`);
-        }
-        if (filterData.statusCode.filteredCount > 0) {
-            logger.info(
-                `${filterData.statusCode.filteredCount} tests did not match status code '${filterData.statusCode.filter}'`
-            );
-        }
-        if (filterData.env.filteredCount > 0) {
-            logger.info(
-                `${filterData.env.filteredCount} tests has no data from environment '${filterData.env.filter}'`
-            );
-        }
-    }
-};
-
 export const filterTests = (tests: AspectoTest[]): AspectoTest[] => {
-    let filterData = {
+    const filterData = {
         verb: { filter: global.aspectoOptions.allowMethods },
         statusCode: { filter: (global.aspectoOptions.allowCodes as unknown) as number },
         env: { filter: global.aspectoOptions.env },
     };
 
     const [filtered, filterDataWithCount] = applyFilter(tests, filterData);
-    logFiltered(tests, filtered, filterDataWithCount);
+    logFilteredTests(tests, filtered, filterDataWithCount);
 
     return filtered;
 };

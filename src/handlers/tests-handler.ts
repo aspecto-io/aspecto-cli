@@ -31,16 +31,20 @@ const handleTestAction = async (url: string, options: TestsOptions) => {
 
     try {
         const allTests: AspectoTest[] = await fetchAllTests(options.package!);
+        if (allTests.length === 0) {
+            logger.info('No tests to run, goodbye!'.bold);
+            return;
+        }
         tests = filterTests(allTests);
+        if (tests.length === 0) {
+            logger.info('All tests were filtered, goodbye!'.bold);
+            return;
+        }
     } catch (err) {
         handleError('Failed generating tests', err.stack);
     }
 
     cli.action.stop(`Generated a total of ${tests.length} tests 🎉`);
-    if (tests.length === 0) {
-        logger.info('No tests to run, goodbye!'.bold);
-        return;
-    }
 
     const fetchEndTime = Date.now();
 
