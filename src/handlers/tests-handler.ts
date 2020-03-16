@@ -2,7 +2,8 @@ import 'colors';
 import { TestsOptions, AspectoTest, TestRunResult } from '../types';
 import { cli } from 'cli-ux';
 import { logger } from '../services/logger';
-import fetchTests from '../services/tests-fetcher';
+import { fetchAllTests } from '../services/tests-fetcher';
+import { filterTests } from '../services/tests-filter';
 import handleError from '../utils/error-handler';
 import routeTestRunner from '../services/test-runner';
 import printer from '../printers';
@@ -29,16 +30,21 @@ const handleTestAction = async (url: string, options: TestsOptions) => {
     cli.action.start('Generating tests from Aspecto server');
 
     try {
-        tests = await fetchTests(options.package!);
+        const allTests: AspectoTest[] = await fetchAllTests(options.package!);
+        if (allTests.length === 0) {
+            logger.info('No tests to run, goodbye!'.bold);
+            return;
+        }
+        tests = filterTests(allTests);
+        if (tests.length === 0) {
+            logger.info('All tests were filtered, goodbye!'.bold);
+            return;
+        }
     } catch (err) {
         handleError('Failed generating tests', err.stack);
     }
 
     cli.action.stop(`Generated a total of ${tests.length} tests 🎉`);
-    if (tests.length === 0) {
-        logger.info('No tests to run, goodbye!'.bold);
-        return;
-    }
 
     const fetchEndTime = Date.now();
 
@@ -48,7 +54,11 @@ const handleTestAction = async (url: string, options: TestsOptions) => {
 
     //  ==== RUN TESTS ===
     cli.action.start(`Running Aspecto API Tests`.bold as any);
-    const testsResponses: TestRunResult[] = await Promise.all(tests.map(routeTestRunner.run));
+    const testsResponses: TestRunResult[] = [];
+    for (const test of tests) {
+        const testResponse = await routeTestRunner.run(test);
+        testsResponses.push(testResponse);
+    }
     cli.action.stop(`Test execution completed, now asserting.`);
     const runEndTime = Date.now();
 
