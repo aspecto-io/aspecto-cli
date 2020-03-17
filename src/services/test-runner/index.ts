@@ -3,8 +3,8 @@ import axios, { AxiosRequestConfig } from 'axios';
 import 'colors';
 import { AspectoTest, TestRunResult } from '../../types';
 
-const run = async (test: AspectoTest): Promise<TestRunResult> => {
-    const requestConfig: AxiosRequestConfig = constructRequest(test);
+const run = async (test: AspectoTest, testParams: any): Promise<TestRunResult> => {
+    const requestConfig: AxiosRequestConfig = constructRequest(test, testParams);
 
     const toAssert: TestRunResult = {
         testId: test._id,

@@ -39,6 +39,12 @@ export interface EnvValue {
     };
 }
 
+export interface TestRule {
+    type: string;
+    subType: string;
+    assignment?: any;
+}
+
 export interface AspectoTest {
     _id: string;
     token: string;
@@ -52,6 +58,7 @@ export interface AspectoTest {
     createdAt: string;
     updatedAt: string;
     responseBodySchemaHash: string;
+    rules: { rules: TestRule[] };
 }
 
 interface AssertionResult {
