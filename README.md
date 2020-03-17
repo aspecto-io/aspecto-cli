@@ -100,6 +100,23 @@ Strict will fail the process on any kind of failure (i.e. bad usage, failure to 
 Alias `-o`. How long to wait (in milliseconds) before timing out an API call as part of the test suites, default is dynamic per route based our production analytics.
 You can override the dynamic timeout by setting this argument.
 
+#### `--test-param <param>`
+Alias `-r`. Supply parameters to populate data in tests which were configured accordingly.
+This enables you to alter certain parts of the request to match your specific testing setup.
+
+You can define the parameter and it's value: 
+```
+--test-param KEY1=value1 --test-param KEY2=value2
+```
+
+You can also use environment variables to populate parameters: 
+```
+export VAR1=value1
+export VAR2=value2
+aspecto test [other options] -r VAR1 -r VAR2
+```
+When running the command, aspecto CLI checks the value the variable has in your local environment, and use it to set the value for the test parameter with the same name.
+
 #### `--verbose`
 
 Alias `-v`. Use this flag to print debug logs.
