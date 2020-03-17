@@ -5,9 +5,9 @@ export interface TestsOptions {
     failStrategy: 'soft' | 'strict';
     allowMethods: string;
     allowCodes: string;
-    skipSchema: boolean;
     env: string;
     timeout: number;
+    testParam: any;
 }
 
 export interface Route {

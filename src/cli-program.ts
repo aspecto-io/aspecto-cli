@@ -6,6 +6,13 @@ const packageJson = require('../package.json');
 
 program.version(packageJson.version);
 
+const collectParam = (value: string, previous: any) => {
+    const splitIndex = value.indexOf('=');
+    if (splitIndex == -1) throw Error(`test param should be in format "key=value"`);
+    previous[value.substring(0, splitIndex)] = value.substring(splitIndex + 1);
+    return previous;
+};
+
 program
     .arguments('<cmd> <url>')
     .option(
@@ -36,7 +43,12 @@ You can override the dynamic timeout by setting this argument.`
         'soft - fail the process only on failed tests. strict - fail the process on any kind of failure',
         'soft'
     )
-    .option('-s --skip-schema', 'Should skip testing response expected schemas')
+    .option(
+        '-r, --test-param <key=value>',
+        'key and value parameter to use for assignment in tests to alter requests',
+        collectParam,
+        {}
+    )
     .option('-v --verbose', 'Print debug logs')
     .action((command: string, url: string, prog: any) => {
         if (command !== 'test') {
