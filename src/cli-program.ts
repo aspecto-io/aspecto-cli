@@ -6,11 +6,23 @@ const packageJson = require('../package.json');
 
 program.version(packageJson.version);
 
-const collectParam = (value: string, previous: any) => {
-    const splitIndex = value.indexOf('=');
-    if (splitIndex == -1) throw Error(`test param should be in format "key=value"`);
-    previous[value.substring(0, splitIndex)] = value.substring(splitIndex + 1);
-    return previous;
+const collectTestParam = (testParam: string, testParamsStore: any) => {
+    const splitIndex = testParam.indexOf('=');
+
+    let paramKey, paramVal: string;
+    // you can use variables that are in the local environment (like with `docker run` -e option)
+    if (splitIndex == -1) {
+        paramKey = testParam;
+        paramVal = process.env[paramKey];
+    } else {
+        paramKey = testParam.substring(0, splitIndex);
+        paramVal = testParam.substring(splitIndex + 1);
+    }
+
+    // if same key defined multiple times, it will override.
+    // this behavior is the same as `docker run` -e option which override silently
+    testParamsStore[paramKey] = paramVal;
+    return testParamsStore;
 };
 
 program
@@ -46,7 +58,7 @@ You can override the dynamic timeout by setting this argument.`
     .option(
         '-r, --test-param <key=value>',
         'key and value parameter to use for assignment in tests to alter requests',
-        collectParam,
+        collectTestParam,
         {}
     )
     .option('-v --verbose', 'Print debug logs')

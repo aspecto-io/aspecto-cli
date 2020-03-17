@@ -11,8 +11,21 @@ export const printParams = () => {
     entries
         .filter((e) => e[1] !== undefined)
         .forEach(([key, value]: [string, any]) => {
-            if (key === 'version') return;
-            const displayValue = key === 'token' ? '••••' : value;
+            let displayValue: string;
+            switch (key) {
+                case 'version':
+                    return;
+                case 'token':
+                    displayValue = '••••';
+                    break;
+                case 'testParam':
+                    displayValue = Object.entries(value)
+                        .map(([k, v]) => `"${k}=${v}"`)
+                        .toString();
+                    break;
+                default:
+                    displayValue = value;
+            }
             logger.info(
                 `${key.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase()}:`.padEnd(15).bold + ' ' + displayValue
             );
