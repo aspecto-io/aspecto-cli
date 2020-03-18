@@ -6,7 +6,6 @@ declare namespace NodeJS {
         failStrategy: 'soft' | 'strict';
         allowMethods: string;
         allowCodes: string;
-        skipSchema: boolean;
         env: string;
         timeout: number;
     }

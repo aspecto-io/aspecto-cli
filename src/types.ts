@@ -5,9 +5,9 @@ export interface TestsOptions {
     failStrategy: 'soft' | 'strict';
     allowMethods: string;
     allowCodes: string;
-    skipSchema: boolean;
     env: string;
     timeout: number;
+    testParam: any;
 }
 
 export interface Route {
@@ -39,6 +39,12 @@ export interface EnvValue {
     };
 }
 
+export interface TestRule {
+    type: string;
+    subType: string;
+    assignment?: any;
+}
+
 export interface AspectoTest {
     _id: string;
     token: string;
@@ -52,16 +58,17 @@ export interface AspectoTest {
     createdAt: string;
     updatedAt: string;
     responseBodySchemaHash: string;
+    rules: { rules: TestRule[] };
 }
 
-interface AssertionResult {
+export interface AssertionResult {
     testSnapshot: {
         statusCode: number;
         route: string;
         verb: string;
         packageName: string;
     };
-    actualRequest: {
+    actualRequest?: {
         url: string;
     };
     assertionResult: {
@@ -85,7 +92,7 @@ export interface TestRunResult {
         verb: string;
         responseBodySchemaHash: string;
     };
-    actualRequest: {
+    actualRequest?: {
         url: string;
         baseURL: string;
         queryParams: any;

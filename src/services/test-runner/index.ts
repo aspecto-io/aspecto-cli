@@ -2,10 +2,9 @@ import constructRequest from './request-constructor';
 import axios, { AxiosRequestConfig } from 'axios';
 import 'colors';
 import { AspectoTest, TestRunResult } from '../../types';
+import { logger } from '../logger';
 
-const run = async (test: AspectoTest): Promise<TestRunResult> => {
-    const requestConfig: AxiosRequestConfig = constructRequest(test);
-
+const run = async (test: AspectoTest, testParams: any): Promise<TestRunResult> => {
     const toAssert: TestRunResult = {
         testId: test._id,
         env: test.envValues[0].env,
@@ -17,20 +16,23 @@ const run = async (test: AspectoTest): Promise<TestRunResult> => {
             verb: test.verb,
             responseBodySchemaHash: test.responseBodySchemaHash,
         },
-        actualRequest: {
+        actualResponse: {},
+    };
+
+    try {
+        const requestConfig: AxiosRequestConfig = constructRequest(test, testParams);
+
+        toAssert.actualRequest = {
             url: requestConfig.url,
             baseURL: requestConfig.baseURL,
             queryParams: requestConfig.params,
             headers: requestConfig.headers,
             body: requestConfig.data,
             verb: requestConfig.method,
-        },
-        actualResponse: {},
-    };
+        };
 
-    const testStartTime = Date.now();
+        const testStartTime = Date.now();
 
-    try {
         const httpResponse = await axios.request(requestConfig);
         toAssert.actualResponse = {
             body: httpResponse.data,
@@ -42,6 +44,7 @@ const run = async (test: AspectoTest): Promise<TestRunResult> => {
         toAssert.actualResponse = {
             error: err.message,
         };
+        logger.error(`failed to execute test '${test.description}'. ${err}`);
     }
 
     return toAssert;
