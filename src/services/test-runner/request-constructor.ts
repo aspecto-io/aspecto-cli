@@ -1,4 +1,4 @@
-import { StringObject, AspectoTest } from '../../types';
+import { StringObject, AspectoTest, TestRule } from '../../types';
 import { AxiosRequestConfig, Method } from 'axios';
 import calculateTimeout from './timeout-calculator';
 
@@ -14,13 +14,51 @@ const constructQuery = (queryObject?: StringObject): string => {
     return query.length > 0 ? '?' + query.join('&') : '';
 };
 
-export default (test: AspectoTest): AxiosRequestConfig => {
+const constructUrl = (originalRoute: string, envUrl: string, assignmentRules: any[], testParams: any): string => {
+    const originalRouteSegments: string[] = originalRoute.split('/');
+    const envSegments: string[] = envUrl.split('/');
+    const rulesByUrlSegmentName = assignmentRules.reduce((map, rule) => {
+        map[rule.assignment.assignToPath] = rule;
+        return map;
+    }, {});
+
+    const rulesApplied = originalRouteSegments.map((segment, i) => {
+        const rule: TestRule = rulesByUrlSegmentName[segment];
+        if (!rule) return envSegments[i];
+
+        const sourceId = rule.assignment?.sourceId;
+        switch (rule.subType) {
+            case 'cli-param':
+                const paramValue = testParams[sourceId];
+                if (!paramValue)
+                    throw Error(
+                        `Missing required CLI test-param "${sourceId}" for URL paramter "${segment}" in route "${originalRoute}".\nYou can supply the value using CLI option --test-param "${sourceId}={your-param-value}"`
+                    );
+                return paramValue;
+
+            default:
+                throw Error(`Unable to apply test rule with unsupported subType "${rule.subType}"`);
+        }
+    });
+    return rulesApplied.join('/');
+};
+
+export default (test: AspectoTest, testParams: any): AxiosRequestConfig => {
     const envValues = test.envValues[0].values;
+
+    const assignmentRules: TestRule[] = test.rules.rules.filter((r) => r.type === 'assignment');
+
+    const url = constructUrl(
+        test.route,
+        envValues.url,
+        assignmentRules.filter((r) => r.assignment.assignOn === 'urlParam'),
+        testParams
+    );
 
     const config: AxiosRequestConfig = {
         method: test.verb as Method,
         baseURL: global.url,
-        url: `${envValues.url}${constructQuery(envValues.queryPrams)}`,
+        url: `${url}${constructQuery(envValues.queryPrams)}`,
         data: envValues.requestBody,
         headers: {
             ...envValues.requestHeaders,

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import handleTestAction from './handlers/tests-handler';
+import { collectTestParam } from './utils/cli-custom-handlers';
 import * as commander from 'commander';
 const program = new commander.Command();
 const packageJson = require('../package.json');
@@ -36,7 +37,12 @@ You can override the dynamic timeout by setting this argument.`
         'soft - fail the process only on failed tests. strict - fail the process on any kind of failure',
         'soft'
     )
-    .option('-s --skip-schema', 'Should skip testing response expected schemas')
+    .option(
+        '-r, --test-param <key=value>',
+        'key and value parameter to use for assignment in tests to alter requests',
+        collectTestParam,
+        {}
+    )
     .option('-v --verbose', 'Print debug logs')
     .action((command: string, url: string, prog: any) => {
         if (command !== 'test') {

@@ -56,7 +56,7 @@ const handleTestAction = async (url: string, options: TestsOptions) => {
     cli.action.start(`Running Aspecto API Tests`.bold as any);
     const testsResponses: TestRunResult[] = [];
     for (const test of tests) {
-        const testResponse = await routeTestRunner.run(test);
+        const testResponse = await routeTestRunner.run(test, options.testParam);
         testsResponses.push(testResponse);
     }
     cli.action.stop(`Test execution completed, now asserting.`);

@@ -1,5 +1,5 @@
 import { logger } from '../services/logger';
-import { AssertionResponse } from '../types';
+import { AssertionResponse, AssertionResult } from '../types';
 import 'colors';
 
 const printRunSummary = (
@@ -27,6 +27,12 @@ const printRunSummary = (
     logger.info(`${'Time:'.padEnd(7).bold} ${time}`);
 };
 
+const testNameForPrinting = (test: AssertionResult): string => {
+    return `${test.testSnapshot.verb} ${test.actualRequest?.url ?? test.testSnapshot.route} - ${
+        test.testSnapshot.statusCode
+    } (env: ${test.env})`;
+};
+
 export const printAssertionResults = (results: AssertionResponse[], startTime: number) => {
     const suitesCount = results.length;
     let suitesPassCount = 0;
@@ -49,7 +55,7 @@ export const printAssertionResults = (results: AssertionResponse[], startTime: n
             testCount++;
             if (assertionResult.success) testPassCount++;
 
-            const testName = `${routeAssert.testSnapshot.verb} ${routeAssert.actualRequest.url} - ${routeAssert.testSnapshot.statusCode} (env: ${routeAssert.env})`;
+            const testName = testNameForPrinting(routeAssert);
             logger.debug(
                 (!assertionResult.success ? ('  ✗ ' as any).brightRed : ('  ✓ ' as any).brightGreen) + testName.gray
             );
@@ -60,7 +66,7 @@ export const printAssertionResults = (results: AssertionResponse[], startTime: n
         suiteResult.assertions
             .filter((r) => !r.assertionResult.success)
             .forEach((routeAssert) => {
-                const testName = `${routeAssert.testSnapshot.verb} ${routeAssert.actualRequest.url} - ${routeAssert.testSnapshot.statusCode} (env: ${routeAssert.env})`;
+                const testName = testNameForPrinting(routeAssert);
                 // @ts-ignore
                 logger.info(`  ● ${testName}`.italic.brightRed);
                 routeAssert.assertionResult.log.split('\n').forEach((x: string) => logger.info(`   ${x}`));
