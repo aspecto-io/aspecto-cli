@@ -14,17 +14,17 @@ const constructQuery = (queryObject?: StringObject): string => {
     return query.length > 0 ? '?' + query.join('&') : '';
 };
 
-const constructUrl = (origRoute: string, envUrl: string, assignmentRules: any[], testParams: any): string => {
-    const origRouteComponents: string[] = origRoute.split('/');
-    const envComponents: string[] = envUrl.split('/');
-    const rulesByUrlComponentName = assignmentRules.reduce((map, rule) => {
+const constructUrl = (originalRoute: string, envUrl: string, assignmentRules: any[], testParams: any): string => {
+    const originalRouteSegments: string[] = originalRoute.split('/');
+    const envSegments: string[] = envUrl.split('/');
+    const rulesByUrlSegmentName = assignmentRules.reduce((map, rule) => {
         map[rule.assignment.assignToPath] = rule;
         return map;
     }, {});
 
-    const rulesApplied = origRouteComponents.map((comp, i) => {
-        const rule: TestRule = rulesByUrlComponentName[comp];
-        if (!rule) return envComponents[i];
+    const rulesApplied = originalRouteSegments.map((segment, i) => {
+        const rule: TestRule = rulesByUrlSegmentName[segment];
+        if (!rule) return envSegments[i];
 
         const sourceId = rule.assignment?.sourceId;
         switch (rule.subType) {
@@ -32,12 +32,12 @@ const constructUrl = (origRoute: string, envUrl: string, assignmentRules: any[],
                 const paramValue = testParams[sourceId];
                 if (!paramValue)
                     throw Error(
-                        `Missing required CLI test-param "${sourceId}" for URL paramter "${comp}" in route "${origRoute}".\nYou can supply the value using CLI option --test-param "${sourceId}={your-param-value}"`
+                        `Missing required CLI test-param "${sourceId}" for URL paramter "${segment}" in route "${originalRoute}".\nYou can supply the value using CLI option --test-param "${sourceId}={your-param-value}"`
                     );
                 return paramValue;
 
             default:
-                throw Error(`unable to apply test rule with unsupported subType "${rule.subType}"`);
+                throw Error(`Unable to apply test rule with unsupported subType "${rule.subType}"`);
         }
     });
     return rulesApplied.join('/');

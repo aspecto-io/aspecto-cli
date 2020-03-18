@@ -21,7 +21,7 @@ export const printParams = () => {
                 case 'testParam':
                     displayValue = Object.entries(value)
                         .map(([k, v]) => `"${k}=${v}"`)
-                        .toString();
+                        .join(', ');
                     break;
                 default:
                     displayValue = value;

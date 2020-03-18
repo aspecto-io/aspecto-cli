@@ -101,7 +101,7 @@ Alias `-o`. How long to wait (in milliseconds) before timing out an API call as 
 You can override the dynamic timeout by setting this argument.
 
 #### `--test-param <param>`
-Alias `-r`. Supply parameters to populate data in tests which were configured accordingly.
+Alias `-r`. Supply parameters to populate data in tests which were configured accordingly in aspecto app.
 This enables you to alter certain parts of the request to match your specific testing setup.
 
 You can define the parameter and it's value: 
