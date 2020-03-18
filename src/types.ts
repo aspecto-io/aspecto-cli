@@ -61,14 +61,14 @@ export interface AspectoTest {
     rules: { rules: TestRule[] };
 }
 
-interface AssertionResult {
+export interface AssertionResult {
     testSnapshot: {
         statusCode: number;
         route: string;
         verb: string;
         packageName: string;
     };
-    actualRequest: {
+    actualRequest?: {
         url: string;
     };
     assertionResult: {
@@ -92,7 +92,7 @@ export interface TestRunResult {
         verb: string;
         responseBodySchemaHash: string;
     };
-    actualRequest: {
+    actualRequest?: {
         url: string;
         baseURL: string;
         queryParams: any;

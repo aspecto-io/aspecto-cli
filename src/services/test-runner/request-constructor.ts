@@ -30,7 +30,10 @@ const constructUrl = (origRoute: string, envUrl: string, assignmentRules: any[],
         switch (rule.subType) {
             case 'cli-param':
                 const paramValue = testParams[sourceId];
-                if (!paramValue) throw Error(`missing required cli test-param "${sourceId}"`);
+                if (!paramValue)
+                    throw Error(
+                        `Missing required CLI test-param "${sourceId}" for URL paramter "${comp}" in route "${origRoute}".\nYou can supply the value using CLI option --test-param "${sourceId}={your-param-value}"`
+                    );
                 return paramValue;
 
             default:
