@@ -19,6 +19,8 @@ export interface ExtractionRule {
 }
 
 const extractFromJsonBody = (rule: ExtractionRule, body: any): ExtractionParamValue => {
+    if (typeof body !== 'object') return { error: `could not extract test param - response body is not JSON` };
+
     const jsonPath = rule.extraction.fromPath;
     const destinationId = rule.extraction.destinationId;
 
@@ -37,7 +39,7 @@ const extractHeader = (rule: ExtractionRule, headers: any): ExtractionParamValue
     const headerName = rule.extraction.fromPath;
 
     const paramValue = headers[headerName];
-    if (paramValue === undefined) return { error: `header "${headerName} not found in response headers"` };
+    if (paramValue === undefined) return { error: `header "${headerName}" not found in response headers` };
     else return { value: paramValue };
 };
 

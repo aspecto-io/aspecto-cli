@@ -1,6 +1,7 @@
-import { StringObject, AspectoTest, TestRule } from '../../types';
+import { StringObject, AspectoTest, TestRule, RuleTypes, ExtractionParamValue } from '../../types';
 import { AxiosRequestConfig, Method } from 'axios';
 import calculateTimeout from './timeout-calculator';
+import { globalExtractedParams } from '.';
 
 const constructQuery = (queryObject?: StringObject): string => {
     const query: string[] = [];
@@ -32,12 +33,26 @@ const constructUrl = (originalRoute: string, envUrl: string, assignmentRules: an
                 const paramValue = testParams[sourceId];
                 if (!paramValue)
                     throw Error(
-                        `Missing required CLI test-param "${sourceId}" for URL paramter "${segment}" in route "${originalRoute}".\nYou can supply the value using CLI option --test-param "${sourceId}={your-param-value}"`
+                        `Missing required CLI test-param '${sourceId}' for URL paramter '${segment}' in route '${originalRoute}'.\nYou can supply the value using CLI option --test-param "${sourceId}={your-param-value}"`
                     );
                 return paramValue;
 
+            case 'from-extraction':
+                const extractionParamValue: ExtractionParamValue = globalExtractedParams[sourceId];
+                if (!extractionParamValue)
+                    throw Error(
+                        `Test requires parameter from previous test which was not set. Parameter id: '${sourceId}'`
+                    );
+
+                if (extractionParamValue.value == undefined)
+                    throw Error(
+                        `Test requires parameter from previous test which could not be extracted. Parameter id: '${sourceId}'. ${extractionParamValue.error}`
+                    );
+
+                return extractionParamValue.value;
+
             default:
-                throw Error(`Unable to apply test rule with unsupported subType "${rule.subType}"`);
+                throw Error(`Unable to apply test rule with unsupported subType '${rule.subType}'`);
         }
     });
     return rulesApplied.join('/');
@@ -46,7 +61,7 @@ const constructUrl = (originalRoute: string, envUrl: string, assignmentRules: an
 export default (test: AspectoTest, testParams: any): AxiosRequestConfig => {
     const envValues = test.envValues[0].values;
 
-    const assignmentRules: TestRule[] = test.rules.rules.filter((r) => r.type === 'assignment');
+    const assignmentRules: TestRule[] = test.rules.rules.filter((r) => r.type === RuleTypes.Assignment);
 
     const url = constructUrl(
         test.route,
