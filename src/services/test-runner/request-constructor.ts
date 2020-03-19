@@ -1,7 +1,7 @@
 import { StringObject, AspectoTest, TestRule, RuleTypes, ExtractionParamValue } from '../../types';
 import { AxiosRequestConfig, Method } from 'axios';
 import calculateTimeout from './timeout-calculator';
-import { globalExtractedParams } from '.';
+import { globalExtractedParams } from './response-extraction';
 
 const constructQuery = (queryObject?: StringObject): string => {
     const query: string[] = [];

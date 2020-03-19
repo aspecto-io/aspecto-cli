@@ -1,8 +1,10 @@
 import { AspectoTest, RuleTypes, ExtractionParamValue } from '../../types';
 import { AxiosResponse } from 'axios';
 import * as jsonpath from 'jsonpath';
-import { globalExtractedParams } from '.';
 import { logger } from '../logger';
+
+// key is param id, value is ExtractionParamValue
+export const globalExtractedParams: any = {};
 
 export enum ExtractionSubType {
     ResponseBody = 'response-body',
@@ -27,9 +29,9 @@ const extractFromJsonBody = (rule: ExtractionRule, body: any): ExtractionParamVa
     const queryResult = jsonpath.query(body, jsonPath);
     if (queryResult.length == 0) return { error: `could not extract path '${jsonPath}' from response body` };
     else {
-        if (queryResult.length == 0)
+        if (queryResult.length > 1)
             logger.debug(
-                `extracting params "${destinationId}" from response body - choose one value from possible ${queryResult.length} for path "${jsonPath}"`
+                `Extracting params '${destinationId}' from response body - one value chosen from possible ${queryResult.length} for path "${jsonPath}"`
             );
         return { value: queryResult[0] };
     }
