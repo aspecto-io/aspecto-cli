@@ -1,0 +1,63 @@
+import { AspectoTest, RuleTypes, ExtractionParamValue } from '../../types';
+import { AxiosResponse } from 'axios';
+import * as jsonpath from 'jsonpath';
+import { globalExtractedParams } from '.';
+import { logger } from '../logger';
+
+export enum ExtractionSubType {
+    ResponseBody = 'response-body',
+    ResponseHeaders = 'response-headers',
+}
+
+export interface ExtractionRule {
+    type: RuleTypes.Extraction;
+    subType: ExtractionSubType;
+    extraction: {
+        fromPath: string;
+        destinationId: string;
+    };
+}
+
+const extractFromJsonBody = (rule: ExtractionRule, body: any): ExtractionParamValue => {
+    const jsonPath = rule.extraction.fromPath;
+    const destinationId = rule.extraction.destinationId;
+
+    const queryResult = jsonpath.query(body, jsonPath);
+    if (queryResult.length == 0) return { error: `could not extract path '${jsonPath}' from response body` };
+    else {
+        if (queryResult.length == 0)
+            logger.debug(
+                `extracting params "${destinationId}" from response body - choose one value from possible ${queryResult.length} for path "${jsonPath}"`
+            );
+        return { value: queryResult[0] };
+    }
+};
+
+const extractHeader = (rule: ExtractionRule, headers: any): ExtractionParamValue => {
+    const headerName = rule.extraction.fromPath;
+
+    const paramValue = headers[headerName];
+    if (paramValue === undefined) return { error: `header "${headerName} not found in response headers"` };
+    else return { value: paramValue };
+};
+
+export const extractValuesFromResponse = (test: AspectoTest, httpResponse: AxiosResponse) => {
+    test.rules.rules
+        .filter((rule) => rule.type === RuleTypes.Extraction)
+        .forEach((rule: ExtractionRule) => {
+            let extractionVal: ExtractionParamValue;
+            switch (rule.subType) {
+                case ExtractionSubType.ResponseBody:
+                    extractionVal = extractFromJsonBody(rule, httpResponse.data);
+                    break;
+                case ExtractionSubType.ResponseHeaders:
+                    extractionVal = extractHeader(rule, httpResponse.headers);
+                    break;
+                default:
+                    extractionVal = {
+                        error: `unsupported extraction source "${rule.subType}"`,
+                    };
+            }
+            globalExtractedParams[rule.extraction.destinationId] = extractionVal;
+        });
+};
