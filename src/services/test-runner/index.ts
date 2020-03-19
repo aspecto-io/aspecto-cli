@@ -3,6 +3,7 @@ import axios, { AxiosRequestConfig } from 'axios';
 import 'colors';
 import { AspectoTest, TestRunResult } from '../../types';
 import { logger } from '../logger';
+import { extractValuesFromResponse } from './response-extraction';
 
 const run = async (test: AspectoTest, testParams: any): Promise<TestRunResult> => {
     const toAssert: TestRunResult = {
@@ -40,6 +41,7 @@ const run = async (test: AspectoTest, testParams: any): Promise<TestRunResult> =
             statusCode: httpResponse.status,
             executionTimeMs: Date.now() - testStartTime,
         };
+        extractValuesFromResponse(test, httpResponse);
     } catch (err) {
         toAssert.actualResponse = {
             error: err.message,

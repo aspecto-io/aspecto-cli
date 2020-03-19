@@ -39,6 +39,12 @@ export interface EnvValue {
     };
 }
 
+export enum RuleTypes {
+    Assertion = 'assertion',
+    Assignment = 'assignment',
+    Extraction = 'extraction',
+}
+
 export interface TestRule {
     type: string;
     subType: string;
@@ -113,4 +119,9 @@ export interface AssertionResponse {
     route: string;
     success: boolean;
     assertions: AssertionResult[];
+}
+
+export interface ExtractionParamValue {
+    value?: string;
+    error?: string;
 }
