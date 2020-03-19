@@ -41,12 +41,12 @@ const constructUrl = (originalRoute: string, envUrl: string, assignmentRules: an
                 const extractionParamValue: ExtractionParamValue = globalExtractedParams[sourceId];
                 if (!extractionParamValue)
                     throw Error(
-                        `Test requires parameter from previous test which was not set. Parameter id: '${sourceId}'`
+                        `Missing required parameter from previous test. It might have been filtered or failed to run. Parameter id: '${sourceId}'`
                     );
 
                 if (extractionParamValue.value == undefined)
                     throw Error(
-                        `Test requires parameter from previous test which could not be extracted. Parameter id: '${sourceId}'. ${extractionParamValue.error}`
+                        `Missing required paramter from previous test which failed to extract the value. Parameter id: '${sourceId}'. ${extractionParamValue.error}`
                     );
 
                 return extractionParamValue.value;
