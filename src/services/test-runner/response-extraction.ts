@@ -21,17 +21,20 @@ export interface ExtractionRule {
 }
 
 const extractFromJsonBody = (rule: ExtractionRule, body: any): ExtractionParamValue => {
-    if (typeof body !== 'object') return { error: `could not extract test param - response body is not JSON` };
-
     const jsonPath = rule.extraction.fromPath;
     const destinationId = rule.extraction.destinationId;
+
+    if (jsonPath === '$.') return { value: body };
+
+    // if the jsonPath is not '$.' then its a query on JSON, so body has to be object
+    if (typeof body !== 'object') return { error: `could not extract test param - response body is not JSON` };
 
     const queryResult = jsonpath.query(body, jsonPath);
     if (queryResult.length == 0) return { error: `could not extract path '${jsonPath}' from response body` };
     else {
         if (queryResult.length > 1)
             logger.debug(
-                `Extracting params '${destinationId}' from response body - one value chosen from possible ${queryResult.length} for path "${jsonPath}"`
+                `Extracting params '${destinationId}' from response body - the first value was chosen from possible ${queryResult.length} values for path "${jsonPath}"`
             );
         return { value: queryResult[0] };
     }
