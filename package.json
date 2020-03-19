@@ -1,6 +1,6 @@
 {
     "name": "@aspecto/cli",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "description": "Aspecto CLI",
     "main": "./dist/index.js",
     "scripts": {
@@ -24,10 +24,12 @@
         "cli-ux": "^5.3.3",
         "colors": "^1.4.0",
         "commander": "^4.0.1",
+        "jsonpath": "^1.0.2",
         "ts-node": "^8.5.4",
         "uuid": "^3.3.3"
     },
     "devDependencies": {
+        "@types/jsonpath": "^0.2.0",
         "@types/node": "^12.12.14",
         "@types/uuid": "^3.4.6",
         "@typescript-eslint/eslint-plugin": "^2.10.0",
