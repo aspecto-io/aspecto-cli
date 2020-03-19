@@ -5,7 +5,7 @@ import { AspectoTest, TestRunResult } from '../../types';
 import { logger } from '../logger';
 import { extractValuesFromResponse } from './response-extraction';
 
-// key is param name, value is ExtractionParamValue
+// key is param id, value is ExtractionParamValue
 export const globalExtractedParams: any = {};
 
 const run = async (test: AspectoTest, testParams: any): Promise<TestRunResult> => {
