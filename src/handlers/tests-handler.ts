@@ -76,8 +76,8 @@ const handleTestAction = async (url: string, options: TestsOptions) => {
     const failed = assertResults.some((x) => !x.success);
 
     if (summaryId) {
-        const summaryPageUrl = summaryId ? `https://app.aspecto.io/app/tests/log/${summaryId}` : undefined;
-        logger.info(`Test summary available at ${summaryPageUrl}`);
+        const summaryPageUrl = `https://app.aspecto.io/app/tests/log/${summaryId}`;
+        cli.url('Test summary', summaryPageUrl);
     }
 
     if (failed && options.allowFail) {
