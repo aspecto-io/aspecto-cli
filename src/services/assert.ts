@@ -9,7 +9,7 @@ export const assert = async (
     runTestsDuration: number
 ) => {
     try {
-        const res = await client.post<AssertionResponse[]>('/assert', {
+        const res = await client.post<{ summaryId: string; assertionResults: AssertionResponse[] }>('/assert', {
             options: global.aspectoOptions,
             url: global.url,
             hostname: os.hostname(),
