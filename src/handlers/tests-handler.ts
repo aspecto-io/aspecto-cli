@@ -64,16 +64,25 @@ const handleTestAction = async (url: string, options: TestsOptions) => {
 
     // === ASSERT TESTS ===
     cli.action.start(`Asserting tests..`.bold as any);
-    const assertion = await assert(testsResponses, fetchEndTime - startTime, runEndTime - fetchEndTime);
+    const { summaryId, assertResults } = await assert(
+        testsResponses,
+        fetchEndTime - startTime,
+        runEndTime - fetchEndTime
+    );
     cli.action.stop(`Done.\n`.bold as any);
-    const assertionResultsByRoute = aggregateTestsByRoute(assertion);
+    const assertionResultsByRoute = aggregateTestsByRoute(assertResults);
     printer.printAssertionResults(assertionResultsByRoute, startTime);
 
-    const failed = assertion.some((x) => !x.success);
+    const failed = assertResults.some((x) => !x.success);
+
+    if (summaryId) {
+        const summaryPageUrl = `https://app.aspecto.io/app/tests/log/${summaryId}`;
+        cli.url('Test summary', summaryPageUrl);
+    }
 
     if (failed && options.allowFail) {
         logger.newLine();
-        logger.info(` Run failed, exiting with 1 `.bgRed.bold);
+        logger.info(`Run failed, exiting with 1 `.bgRed.bold);
         process.exit(1);
     } else if (failed) {
         logger.newLine();

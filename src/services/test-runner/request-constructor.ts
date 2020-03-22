@@ -28,6 +28,8 @@ const constructUrl = (originalRoute: string, envUrl: string, assignmentRules: an
         if (!rule) return envSegments[i];
 
         const sourceId = rule.assignment?.sourceId;
+        if (sourceId === undefined) throw Error(`Cannot assign test parameter, source id is missing`);
+
         switch (rule.subType) {
             case 'cli-param':
                 const paramValue = testParams[sourceId];
@@ -51,8 +53,11 @@ const constructUrl = (originalRoute: string, envUrl: string, assignmentRules: an
 
                 return extractionParamValue.value;
 
+            case 'const':
+                return sourceId;
+
             default:
-                throw Error(`Unable to apply test rule with unsupported subType '${rule.subType}'`);
+                throw Error(`Cannot assign test parameter - unsupported subType '${rule.subType}'`);
         }
     });
     return rulesApplied.join('/');
