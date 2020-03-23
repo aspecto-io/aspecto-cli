@@ -20,8 +20,7 @@ program
     .requiredOption('-e, --env <envs>', 'csv of environments the we generate the tests from (i.e. prod,dev)')
     .option(
         '-o, --timeout <timeout>',
-        `how long to wait before timing out an API call as part of the test suites, default is dynamic per route based our production analytics.
-You can override the dynamic timeout by setting this argument.`
+        `how long to wait before timing out an API call as part of the test suites. Default is 5000ms.`
     )
     .option(
         '-m, --allow-methods <methods>',
