@@ -67,6 +67,14 @@ export interface AspectoTest {
     rules: { rules: TestRule[] };
 }
 
+export interface TestAndCliMetadata {
+    test: AspectoTest;
+    filterResult: {
+        pass: boolean;
+        appliedFilters: string[];
+    };
+}
+
 export interface AssertionResult {
     testSnapshot: {
         statusCode: number;
@@ -112,6 +120,7 @@ export interface TestRunResult {
         statusCode?: number;
         executionTimeMs?: number;
         error?: any;
+        filteredReasons?: string[];
     };
 }
 

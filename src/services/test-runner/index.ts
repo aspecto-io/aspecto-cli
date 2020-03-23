@@ -1,11 +1,12 @@
 import constructRequest from './request-constructor';
 import axios, { AxiosRequestConfig } from 'axios';
 import 'colors';
-import { AspectoTest, TestRunResult } from '../../types';
+import { TestRunResult, TestAndCliMetadata, AspectoTest } from '../../types';
 import { logger } from '../logger';
 import { extractValuesFromResponse } from './response-extraction';
 
-const run = async (test: AspectoTest, testParams: any): Promise<TestRunResult> => {
+const run = async (testWithMetadata: TestAndCliMetadata, testParams: any): Promise<TestRunResult> => {
+    const test: AspectoTest = testWithMetadata.test;
     const toAssert: TestRunResult = {
         testId: test._id,
         env: test.envValues[0].env,
@@ -19,6 +20,13 @@ const run = async (test: AspectoTest, testParams: any): Promise<TestRunResult> =
         },
         actualResponse: {},
     };
+
+    if (!testWithMetadata.filterResult.pass) {
+        toAssert.actualResponse = {
+            filteredReasons: testWithMetadata.filterResult.appliedFilters,
+        };
+        return toAssert;
+    }
 
     try {
         const requestConfig: AxiosRequestConfig = constructRequest(test, testParams);
