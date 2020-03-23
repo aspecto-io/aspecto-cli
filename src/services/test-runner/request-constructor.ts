@@ -85,8 +85,7 @@ export default (test: AspectoTest, testParams: any): AxiosRequestConfig => {
             'X-Origin': 'Aspecto-CLI',
         },
         validateStatus: () => true,
-        timeout: calculateTimeout(test),
-        // timeout: 10000,
+        timeout: global.aspectoOptions.timeout,
     };
 
     return config;
