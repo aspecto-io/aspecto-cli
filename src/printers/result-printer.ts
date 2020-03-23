@@ -28,9 +28,8 @@ const printRunSummary = (
 };
 
 const testNameForPrinting = (test: AssertionResult): string => {
-    return `${test.testSnapshot.verb} ${test.actualRequest?.url ?? test.testSnapshot.route} - ${
-        test.testSnapshot.statusCode
-    } (env: ${test.env})`;
+    return `${test.testSnapshot.description}: ${test.testSnapshot.verb} ${test.actualRequest?.url ??
+        test.testSnapshot.route} - ${test.testSnapshot.statusCode} (env: ${test.env})`;
 };
 
 export const printAssertionResults = (results: AssertionResponse[], startTime: number) => {

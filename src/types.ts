@@ -73,6 +73,7 @@ export interface AssertionResult {
         route: string;
         verb: string;
         packageName: string;
+        description: string;
     };
     actualRequest?: {
         url: string;
