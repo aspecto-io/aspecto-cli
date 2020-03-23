@@ -97,7 +97,7 @@ Soft will fail the process only on a failed test.
 Strict will fail the process on any kind of failure (i.e. bad usage, failure to fetch tests).  
 
 #### `--timeout <timeout>`
-Alias `-o`. How long to wait (in milliseconds) before timing out an API call as part of the test suites. Default is 1000ms.
+Alias `-o`. How long to wait (in milliseconds) before timing out an API call as part of the test suites. Default is 5000ms.
 
 #### `--test-param <param>`
 Alias `-r`. Supply parameters to populate data in tests which were configured accordingly in aspecto app.
