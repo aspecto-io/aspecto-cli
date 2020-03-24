@@ -14,7 +14,7 @@ export const aggregateTestsByRoute = (assertionResponses: any[]): RouteAssertion
             } as RouteAssertionResults;
         }
         const routeResult: RouteAssertionResults = map[currRoute];
-        const skipped = assertionResponse.assertionResult.success === null;
+        const skipped = assertionResponse.assertionResult.skipped;
         if (!skipped) {
             routeResult.assertions.push(assertionResponse);
             const currentTestPassed = assertionResponse.assertionResult.success;

@@ -4,12 +4,12 @@ import 'colors';
 
 const printRunSummary = (
     startTime: number,
-    routePassCount: number,
-    routeSkippedCount: number,
     routeFailedCount: number,
-    testPassCount: number,
+    routeSkippedCount: number,
+    routePassCount: number,
     testFailedCount: number,
-    testSkippedCount: number
+    testSkippedCount: number,
+    testPassCount: number
 ) => {
     const duration = Date.now() - startTime;
 
@@ -85,11 +85,11 @@ export const printAssertionResults = (results: RouteAssertionResults[], startTim
     });
     printRunSummary(
         startTime,
-        routePassCount,
         routeFailedCount,
         routeSkippedCount,
-        testPassCount,
+        routePassCount,
         testFailedCount,
-        testSkippedCount
+        testSkippedCount,
+        testPassCount
     );
 };
