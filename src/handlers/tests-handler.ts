@@ -70,7 +70,7 @@ const handleTestAction = async (url: string, options: TestsOptions) => {
     const assertionResultsByRoute = aggregateTestsByRoute(assertResults);
     printer.printAssertionResults(assertionResultsByRoute, startTime);
 
-    const failed = assertResults.some((assertionResult: RouteAssertionResults) => assertionResult.success === false);
+    const failed = assertResults.some((assertionResult: RouteAssertionResults) => assertionResult.failedCount > 0);
 
     if (summaryId) {
         const summaryPageUrl = `https://app.aspecto.io/app/tests/log/${summaryId}`;

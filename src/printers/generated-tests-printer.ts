@@ -36,7 +36,7 @@ export const printGeneratedTests = (tests: TestAndCliMetadata[]) => {
         status: {
             minWidth: 25,
             header: 'Run Status',
-            get: (row: TestAndCliMetadata) => (row.filterResult.pass ? 'Schedule to run' : 'Filtered by CLI options'),
+            get: (row: TestAndCliMetadata) => (row.filters.length == 0 ? 'Schedule to run' : 'Filtered by CLI options'),
         },
     });
     logger.newLine();

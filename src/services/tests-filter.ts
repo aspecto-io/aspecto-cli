@@ -8,26 +8,23 @@ const applyFilterOnSingleTest = (
 ): TestAndCliMetadata => {
     const filterReasons = [];
     if (allowedVerbs && !allowedVerbs.includes(test.verb)) {
-        filterReasons.push(`verb '${test.verb}' does not meet the provided filters '${allowedVerbs.join(',')}'`);
+        filterReasons.push(`Method '${test.verb}' does not meet the allow-methods filter '${allowedVerbs.join(',')}'`);
     }
 
     if (allowedStatusCodes && !allowedStatusCodes.includes(test.statusCode)) {
         filterReasons.push(
-            `status code '${test.statusCode}' does not meet the provided filters '${allowedStatusCodes.join(',')}'`
+            `Status Code '${test.statusCode}' does not meet the allow-codes filter '${allowedStatusCodes.join(',')}'`
         );
     }
 
     test.envValues = test.envValues.filter((envValue) => envValue.env === env);
     if (test.envValues.length == 0) {
-        filterReasons.push(`no data available from env '${env}'`);
+        filterReasons.push(`No data available from env '${env}'`);
     }
 
     return {
         test,
-        filterResult: {
-            pass: filterReasons.length == 0,
-            appliedFilters: filterReasons,
-        },
+        filters: filterReasons,
     };
 };
 

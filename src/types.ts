@@ -69,10 +69,7 @@ export interface AspectoTest {
 
 export interface TestAndCliMetadata {
     test: AspectoTest;
-    filterResult: {
-        pass: boolean;
-        appliedFilters: string[];
-    };
+    filters: string[];
 }
 
 export interface AssertionResult {
@@ -88,6 +85,7 @@ export interface AssertionResult {
     };
     assertionResult: {
         success: boolean;
+        skipped: boolean;
         log?: string;
         failedStep?: string;
         stepFailure?: any;
@@ -127,7 +125,6 @@ export interface TestRunResult {
 
 export interface RouteAssertionResults {
     route: string;
-    success: boolean;
     skippedCount: number;
     failedCount: number;
     passedCount: number;

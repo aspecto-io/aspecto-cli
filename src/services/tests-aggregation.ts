@@ -6,7 +6,6 @@ export const aggregateTestsByRoute = (assertionResponses: any[]): RouteAssertion
         if (!(currRoute in map)) {
             map[currRoute] = {
                 route: currRoute,
-                success: true,
                 assertions: [],
                 skippedCount: 0,
                 failedCount: 0,
@@ -16,17 +15,16 @@ export const aggregateTestsByRoute = (assertionResponses: any[]): RouteAssertion
         const routeResult: RouteAssertionResults = map[currRoute];
         const skipped = assertionResponse.assertionResult.skipped;
         if (!skipped) {
-            routeResult.assertions.push(assertionResponse);
             const currentTestPassed = assertionResponse.assertionResult.success;
             if (currentTestPassed) {
                 routeResult.passedCount++;
             } else {
                 routeResult.failedCount++;
-                routeResult.success = false;
             }
         } else {
             routeResult.skippedCount++;
         }
+        routeResult.assertions.push(assertionResponse);
         return map;
     }, {});
     return Object.values(byRouteMap);

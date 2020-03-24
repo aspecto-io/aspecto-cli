@@ -21,9 +21,9 @@ const run = async (testWithMetadata: TestAndCliMetadata, testParams: any): Promi
         actualResponse: {},
     };
 
-    if (!testWithMetadata.filterResult.pass) {
+    if (testWithMetadata.filters.length > 0) {
         toAssert.actualResponse = {
-            filteredReasons: testWithMetadata.filterResult.appliedFilters,
+            filteredReasons: testWithMetadata.filters,
         };
         return toAssert;
     }
@@ -54,7 +54,6 @@ const run = async (testWithMetadata: TestAndCliMetadata, testParams: any): Promi
         toAssert.actualResponse = {
             error: err.message,
         };
-        logger.error(`failed to execute test '${test.description}'. ${err}`);
     }
 
     return toAssert;

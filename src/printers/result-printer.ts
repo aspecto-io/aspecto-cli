@@ -45,15 +45,15 @@ export const printAssertionResults = (results: RouteAssertionResults[], startTim
 
     results.forEach((suiteResult) => {
         let badge: string;
-        if (suiteResult.assertions.length == 0) {
-            badge = '' + 'Route '.bold + suiteResult.route.italic.bold + ' skipped all tests'.bold;
-            routeSkippedCount++;
-        } else if (suiteResult.success) {
+        if (suiteResult.failedCount > 0) {
+            badge = '❌ ' + ' Route '.bold + suiteResult.route.italic.bold + ' failed!'.bold;
+            routeFailedCount++;
+        } else if (suiteResult.passedCount > 0) {
             badge = '✅ ' + ' Route '.bold + suiteResult.route.italic.bold + ' passed!'.bold;
             routePassCount++;
         } else {
-            badge = '❌ ' + ' Route '.bold + suiteResult.route.italic.bold + ' failed!'.bold;
-            routeFailedCount++;
+            badge = '🟡 ' + ' Route '.bold + suiteResult.route.italic.bold + ' skipped all tests'.bold;
+            routeSkippedCount++;
         }
         logger.info(badge);
 
@@ -65,15 +65,19 @@ export const printAssertionResults = (results: RouteAssertionResults[], startTim
             const assertionResult = routeAssert.assertionResult;
 
             const testName = testNameForPrinting(routeAssert);
-            logger.debug(
-                (!assertionResult.success ? ('  ✗ ' as any).brightRed : ('  ✓ ' as any).brightGreen) + testName.gray
-            );
+            if (assertionResult.skipped) {
+                logger.debug(('  • ' as any).yellow + testName.gray);
+            } else if (assertionResult.success) {
+                logger.debug(('  ✓ ' as any).brightGreen + testName.gray);
+            } else {
+                logger.debug(('  ✗ ' as any).brightRed + testName.gray);
+            }
         });
 
-        !suiteResult.success && logger.newLine();
+        suiteResult.failedCount > 0 && logger.newLine();
 
         suiteResult.assertions
-            .filter((r) => !r.assertionResult.success)
+            .filter((r) => !r.assertionResult.skipped && !r.assertionResult.success)
             .forEach((routeAssert) => {
                 const testName = testNameForPrinting(routeAssert);
                 // @ts-ignore
@@ -81,7 +85,8 @@ export const printAssertionResults = (results: RouteAssertionResults[], startTim
                 routeAssert.assertionResult.log.split('\n').forEach((x: string) => logger.info(`   ${x}`));
                 logger.newLine();
             });
-        if (suiteResult.success) logger.debug('');
+
+        if (suiteResult.failedCount == 0) logger.debug('');
     });
     printRunSummary(
         startTime,
