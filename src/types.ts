@@ -67,6 +67,11 @@ export interface AspectoTest {
     rules: { rules: TestRule[] };
 }
 
+export interface TestAndCliMetadata {
+    test: AspectoTest;
+    filters: string[];
+}
+
 export interface AssertionResult {
     testSnapshot: {
         statusCode: number;
@@ -80,6 +85,7 @@ export interface AssertionResult {
     };
     assertionResult: {
         success: boolean;
+        skipped: boolean;
         log?: string;
         failedStep?: string;
         stepFailure?: any;
@@ -113,12 +119,15 @@ export interface TestRunResult {
         statusCode?: number;
         executionTimeMs?: number;
         error?: any;
+        filteredReasons?: string[];
     };
 }
 
-export interface AssertionResponse {
+export interface RouteAssertionResults {
     route: string;
-    success: boolean;
+    skippedCount: number;
+    failedCount: number;
+    passedCount: number;
     assertions: AssertionResult[];
 }
 

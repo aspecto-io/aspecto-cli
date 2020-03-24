@@ -1,5 +1,5 @@
 import { client } from './api-tests-client';
-import { AssertionResponse, TestRunResult } from '../types';
+import { RouteAssertionResults, TestRunResult } from '../types';
 import * as os from 'os';
 import { logger } from './logger';
 
@@ -9,7 +9,7 @@ export const assert = async (
     runTestsDuration: number
 ) => {
     try {
-        const res = await client.post<{ summaryId: string; assertResults: AssertionResponse[] }>('/assert', {
+        const res = await client.post<{ summaryId: string; assertResults: RouteAssertionResults[] }>('/assert', {
             options: global.aspectoOptions,
             url: global.url,
             hostname: os.hostname(),
