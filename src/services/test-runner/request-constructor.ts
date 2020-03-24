@@ -1,6 +1,5 @@
 import { StringObject, AspectoTest, TestRule, RuleTypes, ExtractionParamValue } from '../../types';
 import { AxiosRequestConfig, Method } from 'axios';
-import calculateTimeout from './timeout-calculator';
 import { globalExtractedParams } from './response-extraction';
 
 const constructQuery = (queryObject?: StringObject): string => {
@@ -43,7 +42,7 @@ const constructUrl = (originalRoute: string, envUrl: string, assignmentRules: an
                 const extractionParamValue: ExtractionParamValue = globalExtractedParams[sourceId];
                 if (!extractionParamValue)
                     throw Error(
-                        `Missing required parameter from previous test. It might have been filtered or failed to run. Parameter id: '${sourceId}'`
+                        `Missing required parameter from previous test. It might have been skipped or failed to run. Parameter id: '${sourceId}'`
                     );
 
                 if (extractionParamValue.value == undefined)

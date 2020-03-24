@@ -1,14 +1,15 @@
 import constructRequest from './request-constructor';
 import axios, { AxiosRequestConfig } from 'axios';
 import 'colors';
-import { AspectoTest, TestRunResult } from '../../types';
+import { TestRunResult, TestAndCliMetadata, AspectoTest } from '../../types';
 import { logger } from '../logger';
 import { extractValuesFromResponse } from './response-extraction';
 
-const run = async (test: AspectoTest, testParams: any): Promise<TestRunResult> => {
+const run = async (testWithMetadata: TestAndCliMetadata, testParams: any): Promise<TestRunResult> => {
+    const test: AspectoTest = testWithMetadata.test;
     const toAssert: TestRunResult = {
         testId: test._id,
-        env: test.envValues[0].env,
+        env: test.envValues[0]?.env,
         testSnapshot: {
             packageName: test.packageName,
             description: test.description,
@@ -19,6 +20,13 @@ const run = async (test: AspectoTest, testParams: any): Promise<TestRunResult> =
         },
         actualResponse: {},
     };
+
+    if (testWithMetadata.filters.length > 0) {
+        toAssert.actualResponse = {
+            filteredReasons: testWithMetadata.filters,
+        };
+        return toAssert;
+    }
 
     try {
         const requestConfig: AxiosRequestConfig = constructRequest(test, testParams);
@@ -46,7 +54,6 @@ const run = async (test: AspectoTest, testParams: any): Promise<TestRunResult> =
         toAssert.actualResponse = {
             error: err.message,
         };
-        logger.error(`failed to execute test '${test.description}'. ${err}`);
     }
 
     return toAssert;
