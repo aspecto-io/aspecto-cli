@@ -9,7 +9,7 @@ const run = async (testWithMetadata: TestAndCliMetadata, testParams: any): Promi
     const test: AspectoTest = testWithMetadata.test;
     const toAssert: TestRunResult = {
         testId: test._id,
-        env: test.envValues[0].env,
+        env: test.envValues[0]?.env,
         testSnapshot: {
             packageName: test.packageName,
             description: test.description,

@@ -125,9 +125,12 @@ export interface TestRunResult {
     };
 }
 
-export interface AssertionResponse {
+export interface RouteAssertionResults {
     route: string;
     success: boolean;
+    skippedCount: number;
+    failedCount: number;
+    passedCount: number;
     assertions: AssertionResult[];
 }
 

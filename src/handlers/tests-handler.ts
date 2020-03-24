@@ -1,5 +1,5 @@
 import 'colors';
-import { TestsOptions, AspectoTest, TestRunResult, AssertionResponse, TestAndCliMetadata } from '../types';
+import { TestsOptions, AspectoTest, TestRunResult, RouteAssertionResults, TestAndCliMetadata } from '../types';
 import { cli } from 'cli-ux';
 import { logger } from '../services/logger';
 import { fetchAllTests } from '../services/tests-fetcher';
@@ -70,7 +70,7 @@ const handleTestAction = async (url: string, options: TestsOptions) => {
     const assertionResultsByRoute = aggregateTestsByRoute(assertResults);
     printer.printAssertionResults(assertionResultsByRoute, startTime);
 
-    const failed = assertResults.some((assertionResult: AssertionResponse) => !assertionResult.success);
+    const failed = assertResults.some((assertionResult: RouteAssertionResults) => !assertionResult.success);
 
     if (summaryId) {
         const summaryPageUrl = `https://app.aspecto.io/app/tests/log/${summaryId}`;

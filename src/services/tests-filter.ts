@@ -1,19 +1,25 @@
 import { AspectoTest, TestAndCliMetadata } from '../types';
-import { logFilteredTests } from '../printers/tests-filter-printer';
 
-const applyFilterOnSingleTest = (test: AspectoTest, filters: any): TestAndCliMetadata => {
+const applyFilterOnSingleTest = (
+    test: AspectoTest,
+    allowedVerbs: string[],
+    allowedStatusCodes: number[],
+    env: string
+): TestAndCliMetadata => {
     const filterReasons = [];
-    if (filters.verb.filter && test.verb !== filters.verb.filter) {
-        filterReasons.push(`verb is not '${filters.verb.filter}'`);
+    if (allowedVerbs && !allowedVerbs.includes(test.verb)) {
+        filterReasons.push(`verb '${test.verb}' does not meet the provided filters '${allowedVerbs.join(',')}'`);
     }
 
-    if (filters.statusCode.filter && test.statusCode != filters.statusCode.filter) {
-        filterReasons.push(`status code is not '${filters.statusCode.filter}'`);
+    if (allowedStatusCodes && !allowedStatusCodes.includes(test.statusCode)) {
+        filterReasons.push(
+            `status code '${test.statusCode}' does not meet the provided filters '${allowedStatusCodes.join(',')}'`
+        );
     }
 
-    test.envValues = test.envValues.filter((envValue) => envValue.env === filters.env.filter);
+    test.envValues = test.envValues.filter((envValue) => envValue.env === env);
     if (test.envValues.length == 0) {
-        filterReasons.push(`no data available from env '${filters.env.filter}'`);
+        filterReasons.push(`no data available from env '${env}'`);
     }
 
     return {
@@ -25,48 +31,10 @@ const applyFilterOnSingleTest = (test: AspectoTest, filters: any): TestAndCliMet
     };
 };
 
-const applyFilter = (tests: AspectoTest[], filterData: any): [AspectoTest[], any] => {
-    const filterDataWithCount = { ...filterData };
-    for (let k in filterDataWithCount) {
-        filterDataWithCount[k].filteredCount = 0;
-    }
-
-    const filtered = tests.filter((test) => {
-        let take = true;
-
-        if (filterData.verb.filter && test.verb !== filterData.verb.filter) {
-            take = false;
-            filterDataWithCount.verb.filteredCount++;
-        }
-
-        if (filterData.statusCode.filter && test.statusCode != filterData.statusCode.filter) {
-            take = false;
-            filterDataWithCount.statusCode.filteredCount++;
-        }
-
-        test.envValues = test.envValues.filter((envValue) => envValue.env === filterData.env.filter);
-        if (test.envValues.length == 0) {
-            take = false;
-            filterDataWithCount.env.filteredCount++;
-        }
-
-        return take;
-    });
-
-    return [filtered, filterDataWithCount];
-};
-
 export const filterTests = (tests: AspectoTest[]): TestAndCliMetadata[] => {
-    const filterData = {
-        verb: { filter: global.aspectoOptions.allowMethods },
-        statusCode: { filter: (global.aspectoOptions.allowCodes as unknown) as number },
-        env: { filter: global.aspectoOptions.env },
-    };
+    const allowedVerbs = global.aspectoOptions.allowMethods?.split(',');
+    const allowedStatusCodes = global.aspectoOptions.allowCodes?.split(',').map((s) => (s as unknown) as number);
+    const env = global.aspectoOptions.env;
 
-    return tests.map((t) => applyFilterOnSingleTest(t, filterData));
-
-    const [filtered, filterDataWithCount] = applyFilter(tests, filterData);
-    logFilteredTests(tests, filtered, filterDataWithCount);
-
-    return filtered;
+    return tests.map((t) => applyFilterOnSingleTest(t, allowedVerbs, allowedStatusCodes, env));
 };

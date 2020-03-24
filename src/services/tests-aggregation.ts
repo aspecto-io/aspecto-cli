@@ -1,18 +1,32 @@
-import { AssertionResponse } from '../types';
+import { RouteAssertionResults } from '../types';
 
-export const aggregateTestsByRoute = (assertionResults: any[]): AssertionResponse[] => {
-    const byRouteMap = assertionResults.reduce((map, assertionResult) => {
-        const currRoute: string = assertionResult.testSnapshot.route;
+export const aggregateTestsByRoute = (assertionResponses: any[]): RouteAssertionResults[] => {
+    const byRouteMap = assertionResponses.reduce((map, assertionResponse) => {
+        const currRoute: string = assertionResponse.testSnapshot.route;
         if (!(currRoute in map)) {
             map[currRoute] = {
                 route: currRoute,
                 success: true,
                 assertions: [],
-            } as AssertionResponse;
+                skippedCount: 0,
+                failedCount: 0,
+                passedCount: 0,
+            } as RouteAssertionResults;
         }
-        const assertionResponse: AssertionResponse = map[currRoute];
-        assertionResponse.assertions.push(assertionResult);
-        assertionResponse.success = assertionResponse.success && assertionResult.assertionResult.success;
+        const routeResult: RouteAssertionResults = map[currRoute];
+        const skipped = assertionResponse.assertionResult.success === null;
+        if (!skipped) {
+            routeResult.assertions.push(assertionResponse);
+            const currentTestPassed = assertionResponse.assertionResult.success;
+            if (currentTestPassed) {
+                routeResult.passedCount++;
+            } else {
+                routeResult.failedCount++;
+                routeResult.success = false;
+            }
+        } else {
+            routeResult.skippedCount++;
+        }
         return map;
     }, {});
     return Object.values(byRouteMap);

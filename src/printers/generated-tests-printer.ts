@@ -1,7 +1,7 @@
 import 'colors';
 import { cli } from 'cli-ux';
 import { logger } from '../services/logger';
-import { AspectoTest, TestAndCliMetadata } from '../types';
+import { TestAndCliMetadata } from '../types';
 
 export const printGeneratedTests = (tests: TestAndCliMetadata[]) => {
     logger.newLine();
@@ -15,7 +15,7 @@ export const printGeneratedTests = (tests: TestAndCliMetadata[]) => {
         },
         env: {
             minWidth: 15,
-            get: (row: TestAndCliMetadata) => row.test.envValues[0].env,
+            get: (row: TestAndCliMetadata) => row.test.envValues[0]?.env ?? 'no data',
         },
         startAt: {
             minWidth: 25,
@@ -36,8 +36,7 @@ export const printGeneratedTests = (tests: TestAndCliMetadata[]) => {
         status: {
             minWidth: 25,
             header: 'Run Status',
-            get: (row: TestAndCliMetadata) =>
-                row.filterResult.pass ? 'Schedule to run' : 'Filtered by command line options',
+            get: (row: TestAndCliMetadata) => (row.filterResult.pass ? 'Schedule to run' : 'Filtered by CLI options'),
         },
     });
     logger.newLine();
