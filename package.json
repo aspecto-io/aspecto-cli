@@ -1,6 +1,6 @@
 {
     "name": "@aspecto/cli",
-    "version": "0.1.10",
+    "version": "0.1.13",
     "description": "Aspecto CLI",
     "main": "./dist/index.js",
     "scripts": {
@@ -45,7 +45,8 @@
     },
     "husky": {
         "hooks": {
-            "pre-commit": "lint-staged"
+            "pre-commit": "lint-staged",
+            "pre-push": "npm build"
         }
     },
     "lint-staged": {
