@@ -30,15 +30,15 @@ const constructUrl = (originalRoute: string, envUrl: string, assignmentRules: an
         if (sourceId === undefined) throw Error(`Cannot assign test parameter, source id is missing`);
 
         switch (rule.subType) {
-            case 'cli-param':
+            case 'cli-param': {
                 const paramValue = testParams[sourceId];
                 if (!paramValue)
                     throw Error(
                         `Missing required CLI test-param '${sourceId}' for URL paramter '${segment}' in route '${originalRoute}'.\nYou can supply the value using CLI option --test-param "${sourceId}={your-param-value}"`
                     );
                 return paramValue;
-
-            case 'from-extraction':
+            }
+            case 'from-extraction': {
                 const extractionParamValue: ExtractionParamValue = globalExtractedParams[sourceId];
                 if (!extractionParamValue)
                     throw Error(
@@ -51,7 +51,7 @@ const constructUrl = (originalRoute: string, envUrl: string, assignmentRules: an
                     );
 
                 return extractionParamValue.value;
-
+            }
             case 'const':
                 return sourceId;
 
