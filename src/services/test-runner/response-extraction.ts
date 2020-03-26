@@ -27,10 +27,16 @@ const extractFromJsonBody = (rule: ExtractionRule, body: any): ExtractionParamVa
     if (jsonPath === '$.') return { value: body };
 
     // if the jsonPath is not '$.' then its a query on JSON, so body has to be object
-    if (typeof body !== 'object') return { error: `could not extract test param - response body is not JSON` };
+    if (typeof body !== 'object') return { error: `Could not extract test param - response body is not JSON` };
 
-    const queryResult = jsonpath.query(body, jsonPath);
-    if (queryResult.length == 0) return { error: `could not extract path '${jsonPath}' from response body` };
+    let queryResult;
+    try {
+        queryResult = jsonpath.query(body, jsonPath);
+    } catch (err) {
+        return { error: `Failed to extract path '${jsonPath}' from response body` };
+    }
+
+    if (queryResult.length == 0) return { error: `No data found for path '${jsonPath}' in response body` };
     else {
         if (queryResult.length > 1)
             logger.debug(

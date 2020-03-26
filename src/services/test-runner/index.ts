@@ -27,6 +27,7 @@ const run = async (testWithMetadata: TestAndCliMetadata, testParams: any): Promi
         return toAssert;
     }
 
+    let httpResponse;
     try {
         const requestConfig: AxiosRequestConfig = constructRequest(test, testParams);
 
@@ -41,19 +42,22 @@ const run = async (testWithMetadata: TestAndCliMetadata, testParams: any): Promi
 
         const testStartTime = Date.now();
 
-        const httpResponse = await axios.request(requestConfig);
+        httpResponse = await axios.request(requestConfig);
         toAssert.actualResponse = {
             body: httpResponse.data,
             headers: httpResponse.headers,
             statusCode: httpResponse.status,
             executionTimeMs: Date.now() - testStartTime,
         };
-        extractValuesFromResponse(test, httpResponse);
     } catch (err) {
         toAssert.actualResponse = {
             error: err.message,
         };
     }
+
+    try {
+        extractValuesFromResponse(test, httpResponse);
+    } catch (err) {}
 
     return toAssert;
 };
