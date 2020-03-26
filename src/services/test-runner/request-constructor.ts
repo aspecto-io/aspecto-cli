@@ -28,8 +28,8 @@ const constructUrl = (originalRoute: string, envUrl: string, assignmentRules: an
 
         const sourceId = rule.assignment?.sourceId;
         if (sourceId === undefined) throw Error(`Cannot assign test parameter, source id is missing`);
-        const extractionTest: AspectoTest = rule.assignment?.extractionTest;
-        const extractionTestDescription = extractionTest?.description ? `'${extractionTest?.description}'` : ``;
+        const extractingTest: AspectoTest = rule.assignment?.extractingTest;
+        const extractingTestDescription = extractingTest?.description ? `'${extractingTest?.description}'` : ``;
 
         switch (rule.subType) {
             case 'cli-param': {
@@ -44,12 +44,12 @@ const constructUrl = (originalRoute: string, envUrl: string, assignmentRules: an
                 const extractionParamValue: ExtractionParamValue = globalExtractedParams[sourceId];
                 if (!extractionParamValue)
                     throw Error(
-                        `Missing required parameter from previous test ${extractionTestDescription}. It might have been skipped or failed to run.`
+                        `Missing required parameter from previous test ${extractingTestDescription}. It might have been skipped or failed to run.`
                     );
 
                 if (extractionParamValue.value == undefined)
                     throw Error(
-                        `Missing required paramter from previous test ${extractionTestDescription} which failed to extract the value. ${extractionParamValue.error}`
+                        `Missing required paramter from previous test ${extractingTestDescription} which failed to extract the value. ${extractionParamValue.error}`
                     );
 
                 return extractionParamValue.value;
