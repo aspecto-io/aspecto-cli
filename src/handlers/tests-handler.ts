@@ -12,6 +12,7 @@ import { assert } from '../services/assert';
 import checkUrl from '../services/url-checker';
 import printers from '../printers';
 import { aggregateTestsByRoute } from '../services/tests-aggregation';
+import { attachExtractingTestToAssignRules } from '../services/test-enrichment';
 
 const handleTestAction = async (url: string, options: TestsOptions) => {
     //  ==== CONFIGURATION ===
@@ -35,6 +36,7 @@ const handleTestAction = async (url: string, options: TestsOptions) => {
             logger.info('No tests to run, goodbye!'.bold);
             return;
         }
+        attachExtractingTestToAssignRules(tests);
     } catch (err) {
         handleError('Failed generating tests', err.stack);
     }
