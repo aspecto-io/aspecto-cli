@@ -49,7 +49,7 @@ const constructUrl = (originalRoute: string, envUrl: string, assignmentRules: an
 
                 if (extractionParamValue.value == undefined)
                     throw Error(
-                        `Missing required paramter from previous test ${extractingTestDescription} which failed to extract the value. ${extractionParamValue.error}`
+                        `Missing required parameter from previous test ${extractingTestDescription} which failed to extract the value.\n${extractionParamValue.error}.`
                     );
 
                 return extractionParamValue.value;
