@@ -1,4 +1,4 @@
-import { StringObject, AspectoTest, TestRule, RuleTypes, ExtractionParamValue, TestAndCliMetadata } from '../../types';
+import { StringObject, AspectoTest, TestRule, RuleTypes, ExtractionParamValue } from '../../types';
 import { AxiosRequestConfig, Method } from 'axios';
 import { globalExtractedParams } from './response-extraction';
 
