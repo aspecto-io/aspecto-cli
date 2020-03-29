@@ -72,28 +72,6 @@ export interface TestAndCliMetadata {
     filters: string[];
 }
 
-export interface AssertionResult {
-    testSnapshot: {
-        statusCode: number;
-        route: string;
-        verb: string;
-        packageName: string;
-        description: string;
-    };
-    actualRequest?: {
-        url: string;
-    };
-    assertionResult: {
-        success: boolean;
-        skipped: boolean;
-        log?: string;
-        failedStep?: string;
-        stepFailure?: any;
-    };
-    testId: string;
-    env: string;
-}
-
 export interface TestRunResult {
     testId: string;
     env: string;
@@ -123,12 +101,22 @@ export interface TestRunResult {
     };
 }
 
+export interface TestRunResultWithAssertion extends TestRunResult {
+    assertionResult: {
+        success: boolean;
+        skipped: boolean;
+        log?: string;
+        failedStep?: string;
+        stepFailure?: any;
+    };
+}
+
 export interface RouteAssertionResults {
     route: string;
     skippedCount: number;
     failedCount: number;
     passedCount: number;
-    assertions: AssertionResult[];
+    assertions: TestRunResultWithAssertion[];
 }
 
 export interface ExtractionParamValue {

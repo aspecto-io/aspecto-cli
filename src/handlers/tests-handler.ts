@@ -72,18 +72,20 @@ const handleTestAction = async (url: string, options: TestsOptions) => {
     const assertionResultsByRoute = aggregateTestsByRoute(assertResults);
     printer.printAssertionResults(assertionResultsByRoute, startTime);
 
-    const failed = assertResults.some((assertionResult: RouteAssertionResults) => assertionResult.failedCount > 0);
+    const runFailed = assertionResultsByRoute.some((res: RouteAssertionResults) => res.failedCount > 0);
 
     if (summaryId) {
         const summaryPageUrl = `https://app.aspecto.io/app/tests/log/${summaryId}`;
-        cli.url('Test summary', summaryPageUrl);
+        logger.newLine();
+        logger.info('View detailed test report at Aspecto website:');
+        cli.url('Test Report', summaryPageUrl);
     }
 
-    if (failed && options.allowFail) {
+    if (runFailed && options.allowFail) {
         logger.newLine();
         logger.info(`Run failed, exiting with 1 `.bgRed.bold);
         process.exit(1);
-    } else if (failed) {
+    } else if (runFailed) {
         logger.newLine();
         logger.debug(`Allow fail is off, terminating with 0`.gray);
     }

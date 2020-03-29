@@ -1,21 +1,29 @@
 import { client } from './api-tests-client';
-import { RouteAssertionResults, TestRunResult } from '../types';
+import { TestRunResult, TestRunResultWithAssertion } from '../types';
 import * as os from 'os';
 import { logger } from './logger';
+
+const skipSummaryPersist = process.env.SKIP_SUMMARY_PERSIST === 'true';
+
+interface AssertResponse {
+    summaryId: string;
+    assertResults: TestRunResultWithAssertion[];
+}
 
 export const assert = async (
     testsRunResults: TestRunResult[],
     fetchTestsDuration: number,
     runTestsDuration: number
-) => {
+): Promise<AssertResponse> => {
     try {
-        const res = await client.post<{ summaryId: string; assertResults: RouteAssertionResults[] }>('/assert', {
+        const res = await client.post<AssertResponse>('/assert', {
             options: global.aspectoOptions,
             url: global.url,
             hostname: os.hostname(),
             fetchTestsDuration,
             runTestsDuration,
             runResult: testsRunResults,
+            skipSummaryPersist,
         });
 
         return res.data;
