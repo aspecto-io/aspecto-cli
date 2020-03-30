@@ -1,6 +1,6 @@
 {
     "name": "@aspecto/cli",
-    "version": "0.1.16",
+    "version": "0.1.17",
     "description": "Aspecto CLI",
     "main": "./dist/index.js",
     "scripts": {
@@ -41,7 +41,7 @@
         "typescript": "^3.7.2"
     },
     "bin": {
-        "aspecto": "./dist/index.js"
+        "aspecto": "./dist/cli-program.js"
     },
     "husky": {
         "hooks": {
