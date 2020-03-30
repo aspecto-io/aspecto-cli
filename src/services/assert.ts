@@ -29,6 +29,6 @@ export const assert = async (
         return res.data;
     } catch (err) {
         logger.error(`Something went wrong while trying to assert test run results: ${err}`);
-        process.exit(0);
+        process.exit(global.aspectoOptions.failStrategy === 'soft' ? 0 : 1);
     }
 };
