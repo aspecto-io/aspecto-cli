@@ -1,5 +1,5 @@
 import { logger } from '../services/logger';
-import { RouteAssertionResults, AssertionResult } from '../types';
+import { RouteAssertionResults, TestRunResultWithAssertion } from '../types';
 import 'colors';
 
 const printRunSummary = (
@@ -29,7 +29,7 @@ const printRunSummary = (
     logger.info(`${'Time:'.padEnd(7).bold} ${time}`);
 };
 
-const testNameForPrinting = (test: AssertionResult): string => {
+const testNameForPrinting = (test: TestRunResultWithAssertion): string => {
     return `${test.testSnapshot.description}: ${test.testSnapshot.verb} ${test.actualRequest?.url ??
         test.testSnapshot.route} - ${test.testSnapshot.statusCode} (env: ${test.env})`;
 };
