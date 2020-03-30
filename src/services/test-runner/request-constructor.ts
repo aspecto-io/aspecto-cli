@@ -27,7 +27,7 @@ const constructUrl = (originalRoute: string, envUrl: string, assignmentRules: an
         if (!rule) return envSegments[i];
 
         const sourceId = rule.assignment?.sourceId;
-        if (sourceId === undefined) throw Error(`Cannot assign test parameter, source id is missing`);
+        if (sourceId === undefined) throw new Error(`Cannot assign test parameter, source id is missing`);
         const extractingTest: AspectoTest = rule.assignment?.extractingTest;
         const extractingTestDescription = extractingTest?.description ? `'${extractingTest?.description}'` : ``;
 
@@ -35,7 +35,7 @@ const constructUrl = (originalRoute: string, envUrl: string, assignmentRules: an
             case 'cli-param': {
                 const paramValue = testParams[sourceId];
                 if (!paramValue)
-                    throw Error(
+                    throw new Error(
                         `Missing required CLI test-param '${sourceId}' for URL paramter '${segment}' in route '${originalRoute}'.\nYou can supply the value using CLI option --test-param "${sourceId}={your-param-value}"`
                     );
                 return paramValue;
@@ -43,12 +43,12 @@ const constructUrl = (originalRoute: string, envUrl: string, assignmentRules: an
             case 'from-extraction': {
                 const extractionParamValue: ExtractionParamValue = globalExtractedParams[sourceId];
                 if (!extractionParamValue)
-                    throw Error(
+                    throw new Error(
                         `Missing required parameter from previous test ${extractingTestDescription}. It might have been skipped or failed to run.`
                     );
 
                 if (extractionParamValue.value == undefined)
-                    throw Error(
+                    throw new Error(
                         `Missing required parameter from previous test ${extractingTestDescription} which failed to extract the value.\n${extractionParamValue.error}.`
                     );
 
@@ -58,7 +58,7 @@ const constructUrl = (originalRoute: string, envUrl: string, assignmentRules: an
                 return sourceId;
 
             default:
-                throw Error(`Cannot assign test parameter - unsupported subType '${rule.subType}'`);
+                throw new Error(`Cannot assign test parameter - unsupported subType '${rule.subType}'`);
         }
     });
     return rulesApplied.join('/');

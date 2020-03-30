@@ -13,13 +13,15 @@ export default (url: string, options: TestsOptions) => {
     global.url = url;
 
     if (!options.token) {
-        handleError('token was not provider and could not be retrieved from process.env.ASPECTO_TOKEN.');
+        handleError(
+            'token was not provided with --token option and no environment variable named ASPECTO_TOKEN is found.'
+        );
     }
 
     if (!options.package) {
         const packageName = packageNameRetriever();
         if (!packageName) {
-            handleError('serviceName was not provider and could not be retrieved from package.json.');
+            handleError('package was not provided with --package option and could not be retrieved from package.json.');
         }
         options.package = packageName;
     }

@@ -1,7 +1,7 @@
 import { client } from './api-tests-client';
 import { TestRunResult, TestRunResultWithAssertion } from '../types';
 import * as os from 'os';
-import { logger } from './logger';
+import handleError from '../utils/error-handler';
 
 const skipSummaryPersist = process.env.SKIP_SUMMARY_PERSIST === 'true';
 
@@ -28,7 +28,6 @@ export const assert = async (
 
         return res.data;
     } catch (err) {
-        logger.error(`Something went wrong while trying to assert test run results: ${err}`);
-        process.exit(global.aspectoOptions.failStrategy === 'soft' ? 0 : 1);
+        handleError(`Something went wrong while trying to assert test run results: ${err}`);
     }
 };
