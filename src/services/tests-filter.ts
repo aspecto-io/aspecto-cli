@@ -29,7 +29,7 @@ const applyFilterOnSingleTest = (
 };
 
 export const filterTests = (tests: AspectoTest[]): TestAndCliMetadata[] => {
-    const allowedVerbs = global.aspectoOptions.allowMethods?.split(',');
+    const allowedVerbs = global.aspectoOptions.allowMethods?.toUpperCase()?.split(',');
     const allowedStatusCodes = global.aspectoOptions.allowCodes?.split(',').map((s) => (s as unknown) as number);
     const env = global.aspectoOptions.env;
 

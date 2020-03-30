@@ -28,7 +28,7 @@ export const assert = async (
 
         return res.data;
     } catch (err) {
-        logger.error(`failed to assert tests run results: ${err}`);
-        throw err;
+        logger.error(`Something went wrong while trying to assert test run results: ${err}`);
+        process.exit(0);
     }
 };

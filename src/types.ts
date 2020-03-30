@@ -8,6 +8,7 @@ export interface TestsOptions {
     env: string;
     timeout: number;
     testParam: any;
+    verbose: boolean;
 }
 
 export interface Route {
