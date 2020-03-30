@@ -9,6 +9,7 @@ export default (url: string, options: TestsOptions) => {
     options.timeout = parseInt(options.timeout as any) || 5000;
 
     global.aspectoOptions = options;
+    global.verbose = options.verbose;
     global.url = url;
 
     if (!options.token) {

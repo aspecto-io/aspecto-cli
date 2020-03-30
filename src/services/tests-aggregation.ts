@@ -1,7 +1,7 @@
-import { RouteAssertionResults } from '../types';
+import { RouteAssertionResults, TestRunResultWithAssertion } from '../types';
 
-export const aggregateTestsByRoute = (assertionResponses: any[]): RouteAssertionResults[] => {
-    const byRouteMap = assertionResponses.reduce((map, assertionResponse) => {
+export const aggregateTestsByRoute = (assertionResponses: TestRunResultWithAssertion[]): RouteAssertionResults[] => {
+    const byRouteMap = assertionResponses.reduce((map: Record<string, RouteAssertionResults>, assertionResponse) => {
         const currRoute: string = assertionResponse.testSnapshot.route;
         if (!(currRoute in map)) {
             map[currRoute] = {
