@@ -1,5 +1,5 @@
 import 'colors';
-import { TestsOptions, AspectoTest, TestRunResult, RouteAssertionResults, TestAndCliMetadata } from '../types';
+import { TestsOptions, AspectoTest, TestRunResult, RouteAssertionResults, TestAndCliMetadata } from '../models';
 import { cli } from 'cli-ux';
 import { logger } from '../services/logger';
 import { fetchAllTests } from '../services/tests-fetcher';

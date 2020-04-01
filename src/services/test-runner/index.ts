@@ -1,7 +1,7 @@
 import constructRequest from './request-constructor';
 import axios, { AxiosRequestConfig } from 'axios';
 import 'colors';
-import { TestRunResult, TestAndCliMetadata, AspectoTest } from '../../types';
+import { TestRunResult, TestAndCliMetadata, AspectoTest } from '../../models';
 import { extractValuesFromResponse } from './response-extraction';
 
 const run = async (testWithMetadata: TestAndCliMetadata, testParams: any): Promise<TestRunResult> => {

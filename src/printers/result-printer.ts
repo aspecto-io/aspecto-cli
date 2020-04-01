@@ -1,5 +1,5 @@
 import { logger } from '../services/logger';
-import { RouteAssertionResults, TestRunResultWithAssertion } from '../types';
+import { RouteAssertionResults, TestRunResultWithAssertion } from '../models';
 import 'colors';
 
 const printRunSummary = (

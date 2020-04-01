@@ -1,8 +1,8 @@
-import { StringObject, AspectoTest, TestRule, RuleTypes, ExtractionParamValue } from '../../types';
+import { AspectoTest, ExtractionParamValue, Rule, RuleTypes, AssignmentRule } from '../../models';
 import { AxiosRequestConfig, Method } from 'axios';
 import { globalExtractedParams } from './response-extraction';
 
-const constructQuery = (queryObject?: StringObject): string => {
+const constructQuery = (queryObject?: Record<string, string>): string => {
     const query: string[] = [];
     if (queryObject) {
         Object.entries(queryObject).forEach(([queryName, value]) => {
@@ -23,12 +23,12 @@ const constructUrl = (originalRoute: string, envUrl: string, assignmentRules: an
     }, {});
 
     const rulesApplied = originalRouteSegments.map((segment, i) => {
-        const rule: TestRule = rulesByUrlSegmentName[segment];
+        const rule: Rule = rulesByUrlSegmentName[segment];
         if (!rule) return envSegments[i];
 
-        const sourceId = rule.assignment?.sourceId;
+        const sourceId = (rule as AssignmentRule).assignment?.sourceId;
         if (sourceId === undefined) throw new Error(`Cannot assign test parameter, source id is missing`);
-        const extractingTest: AspectoTest = rule.assignment?.extractingTest;
+        const extractingTest: AspectoTest = (rule as AssignmentRule).assignment?.extractingTest;
         const extractingTestDescription = extractingTest?.description ? `'${extractingTest?.description}'` : ``;
 
         switch (rule.subType) {
@@ -67,12 +67,12 @@ const constructUrl = (originalRoute: string, envUrl: string, assignmentRules: an
 export default (test: AspectoTest, testParams: any): AxiosRequestConfig => {
     const envValues = test.envValues[0].values;
 
-    const assignmentRules: TestRule[] = test.rules.rules.filter((r) => r.type === RuleTypes.Assignment);
+    const assignmentRules: Rule[] = test.rules.rules.filter((r) => r.type === RuleTypes.Assignment);
 
     const url = constructUrl(
         test.route,
         envValues.url,
-        assignmentRules.filter((r) => r.assignment.assignOn === 'urlParam'),
+        assignmentRules.filter((r: AssignmentRule) => r.assignment.assignOn === 'urlParam'),
         testParams
     );
 

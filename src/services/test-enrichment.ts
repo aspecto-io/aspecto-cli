@@ -1,4 +1,4 @@
-import { AspectoTest } from '../types';
+import { AspectoTest, AssignmentRule } from '../models';
 
 export const attachExtractingTestToAssignRules = (tests: AspectoTest[]) => {
     const testById = tests.reduce((map: Record<string, AspectoTest>, test: AspectoTest) => {
@@ -7,7 +7,7 @@ export const attachExtractingTestToAssignRules = (tests: AspectoTest[]) => {
     }, {});
     tests.forEach((test) => {
         test.rules.rules
-            .filter((r) => r.assignment?.extractingTestId)
-            .forEach((r) => (r.assignment.extractingTest = testById[r.assignment.extractingTestId]));
+            .filter((r: AssignmentRule) => r.assignment?.extractingTestId)
+            .forEach((r: AssignmentRule) => (r.assignment.extractingTest = testById[r.assignment.extractingTestId]));
     });
 };

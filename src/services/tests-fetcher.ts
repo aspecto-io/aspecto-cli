@@ -1,4 +1,4 @@
-import { AspectoTest } from '../types';
+import { AspectoTest } from '../models';
 import { client } from './api-tests-client';
 import { attachExtractingTestToAssignRules } from './test-enrichment';
 
