@@ -1,4 +1,4 @@
-import { AspectoTest, RuleTypes, AssignmentRule, AssignOn } from 'models';
+import { AspectoTest, RuleTypes, AssignmentRule, AssignOn } from '../../models';
 import { AxiosRequestConfig, Method } from 'axios';
 import getDynamicParam from './get-dynamic-parameter';
 
