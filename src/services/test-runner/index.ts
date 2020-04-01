@@ -1,10 +1,10 @@
 import constructRequest from './request-constructor';
 import axios, { AxiosRequestConfig } from 'axios';
 import 'colors';
-import { TestRunResult, TestAndCliMetadata, AspectoTest } from '../../types';
+import { TestRunResult, TestAndCliMetadata, AspectoTest } from '../../models';
 import { extractValuesFromResponse } from './response-extraction';
 
-const run = async (testWithMetadata: TestAndCliMetadata, testParams: any): Promise<TestRunResult> => {
+const run = async (testWithMetadata: TestAndCliMetadata): Promise<TestRunResult> => {
     const test: AspectoTest = testWithMetadata.test;
     const toAssert: TestRunResult = {
         testId: test._id,
@@ -29,7 +29,7 @@ const run = async (testWithMetadata: TestAndCliMetadata, testParams: any): Promi
 
     let httpResponse;
     try {
-        const requestConfig: AxiosRequestConfig = constructRequest(test, testParams);
+        const requestConfig: AxiosRequestConfig = constructRequest(test);
 
         toAssert.actualRequest = {
             url: requestConfig.url,

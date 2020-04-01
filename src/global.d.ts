@@ -8,6 +8,7 @@ declare namespace NodeJS {
         allowCodes: string;
         env: string;
         timeout: number;
+        testParam: Record<string, string>;
     }
 
     export interface Global {

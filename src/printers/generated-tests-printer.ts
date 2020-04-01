@@ -1,7 +1,7 @@
 import 'colors';
 import { cli } from 'cli-ux';
 import { logger } from '../services/logger';
-import { TestAndCliMetadata } from '../types';
+import { TestAndCliMetadata } from '../models';
 
 export const printGeneratedTests = (tests: TestAndCliMetadata[]) => {
     logger.newLine();
