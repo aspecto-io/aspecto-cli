@@ -1,4 +1,4 @@
-import { TestsOptions } from '../types';
+import { TestsOptions } from '../models';
 import packageNameRetriever from '../utils/package-name-retriever';
 import handleError from '../utils/error-handler';
 

@@ -1,4 +1,4 @@
-import { AspectoTest, RuleTypes, ExtractionParamValue } from '../../types';
+import { AspectoTest, ExtractionParamValue, RuleTypes } from '../../models';
 import { AxiosResponse } from 'axios';
 import * as jsonpath from 'jsonpath';
 import { logger } from '../logger';

@@ -1,4 +1,4 @@
-import { AspectoTest, TestAndCliMetadata } from '../types';
+import { TestAndCliMetadata, AspectoTest } from '../models';
 
 const applyFilterOnSingleTest = (
     test: AspectoTest,

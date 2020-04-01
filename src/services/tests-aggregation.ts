@@ -1,4 +1,4 @@
-import { RouteAssertionResults, TestRunResultWithAssertion } from '../types';
+import { RouteAssertionResults, TestRunResultWithAssertion } from '../models';
 
 export const aggregateTestsByRoute = (assertionResponses: TestRunResultWithAssertion[]): RouteAssertionResults[] => {
     const byRouteMap = assertionResponses.reduce((map: Record<string, RouteAssertionResults>, assertionResponse) => {

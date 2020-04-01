@@ -1,5 +1,5 @@
 import { client } from './api-tests-client';
-import { TestRunResult, TestRunResultWithAssertion } from '../types';
+import { TestRunResult, TestRunResultWithAssertion } from '../models';
 import * as os from 'os';
 import handleError from '../utils/error-handler';
 

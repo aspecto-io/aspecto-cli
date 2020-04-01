@@ -100,21 +100,15 @@ Strict will fail the process on any kind of failure (i.e. bad usage, failure to 
 Alias `-o`. How long to wait (in milliseconds) before timing out an API call as part of the test suites. Default is 5000ms.
 
 #### `--test-param <param>`
-Alias `-r`. Supply parameters to populate data in tests which were configured accordingly in aspecto app.
+Alias `-r`. Supply parameters to populate data in tests which were configured accordingly in [Aspecto tests section](https://app.aspecto.io/app/tests/approved).  
 This enables you to alter certain parts of the request to match your specific testing setup.
 
 You can define the parameter and it's value: 
 ```
 --test-param KEY1=value1 --test-param KEY2=value2
 ```
+If not provided, we will try to pick it from your environment.
 
-You can also use environment variables to populate parameters: 
-```
-export VAR1=value1
-export VAR2=value2
-aspecto test [other options] -r VAR1 -r VAR2
-```
-When running the command, aspecto CLI checks the value the variable has in your local environment, and use it to set the value for the test parameter with the same name.
 
 #### `--verbose`
 
