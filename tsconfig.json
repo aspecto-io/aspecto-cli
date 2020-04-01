@@ -14,7 +14,11 @@
         "noImplicitAny": true,
         "allowSyntheticDefaultImports": true,
         "noUnusedLocals": true,
-        "noUnusedParameters": true
+        "noUnusedParameters": true,
+        "baseUrl": ".",
+        "paths": {
+            "models": ["src/models"]
+        }
     },
     "include": ["src/**/*"],
     "exclude": ["**/node_modules/*"]

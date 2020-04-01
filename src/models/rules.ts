@@ -64,3 +64,14 @@ export interface AssignmentRule {
         extractingTest?: AspectoTest;
     };
 }
+
+export const assignOnToDisplayText = (assignOn: AssignOn) => {
+    switch (assignOn) {
+        case AssignOn.URLParam:
+            return 'URL Param';
+        case AssignOn.QueryParam:
+            return 'Query Param';
+        default:
+            return assignOn.charAt(0).toUpperCase() + assignOn.slice(1);
+    }
+};

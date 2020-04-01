@@ -5,9 +5,9 @@ export interface EnvValue {
     values: {
         url: string;
         requestBody: any;
-        urlParams: any;
-        requestHeaders: any;
-        queryPrams: any; // there is a spelling mistake here which goes all the way to mongo
+        urlParams: Record<string, string>;
+        requestHeaders: Record<string, string>;
+        queryPrams: Record<string, string>; // there is a spelling mistake here which goes all the way to mongo
     };
 }
 

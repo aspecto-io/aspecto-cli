@@ -9,7 +9,7 @@ export interface TestsOptions {
     allowCodes: string;
     env: string;
     timeout: number;
-    testParam: any;
+    testParam: Record<string, string>;
     verbose: boolean;
 }
 
